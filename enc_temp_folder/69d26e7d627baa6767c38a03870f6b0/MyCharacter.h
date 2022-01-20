@@ -19,35 +19,24 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		class UCameraComponent* CameraComp;
 
 	void MoveForward(float AxisValue);
 
 	void MoveRight(float AxisValue);
-
-	void CameraZoom(float AxisValue);
 	
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 		class USpringArmComponent* SpringArmComp;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 		float RotationSpeed;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 		float SpringArmLength;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 		float SpringArmHeight;
-
-	UPROPERTY(EditAnywhere)
-		float MinCameraZoom;
-
-	UPROPERTY(EditAnywhere)
-		float MaxCameraZoom;
-
-	UPROPERTY(EditAnywhere)
-		float ZoomSpeed;
 
 public:	
 	// Called every frame
