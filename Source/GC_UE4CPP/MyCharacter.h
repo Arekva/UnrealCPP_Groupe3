@@ -27,6 +27,8 @@ protected:
 	void MoveRight(float AxisValue);
 
 	void CameraZoom(float AxisValue);
+
+	void PickUp();
 	
 	UPROPERTY(EditDefaultsOnly)
 		class USpringArmComponent* SpringArmComp;
@@ -55,5 +57,9 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+	bool IsCarrying;
+
+	bool IsPicking;
 
 };
