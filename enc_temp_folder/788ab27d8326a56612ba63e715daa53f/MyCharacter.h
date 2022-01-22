@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "Food.h"
 #include "MyCharacter.generated.h"
 
 UCLASS()
@@ -62,9 +61,5 @@ public:
 	bool IsCarrying;
 
 	bool IsPicking;
-
-	bool IsFoodPickable;
-
-	AFood* PickableFood;
 
 };
