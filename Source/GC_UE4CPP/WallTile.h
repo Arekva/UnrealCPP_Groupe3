@@ -4,24 +4,28 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FloorTile.generated.h"
+#include "WallTile.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AFloorTile : public AActor
+class GC_UE4CPP_API AWallTile : public AActor
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	AFloorTile();
+	AWallTile();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* StaticMesh;
 
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* FloorStaticMesh;
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* WallStaticMesh;
+
+	float WallY = -90;
+	float WallZ = 110;
 
 public:	
 	// Called every frame

@@ -18,7 +18,8 @@ ALvlGenerator::ALvlGenerator()
 void ALvlGenerator::BeginPlay()
 {
 	Super::BeginPlay();
-    SpawnFloorTile();
+    GenerateLvl(LvlSizeX, LvlSizeY);
+    GenerateWalls(LvlSizeX, LvlSizeY);
     GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("BeginCalled"));
 }
 
@@ -30,7 +31,6 @@ void ALvlGenerator::Tick(float DeltaTime)
 
 void ALvlGenerator::SpawnFloorTile()
 {
-    //If the usefulactorbp is valid
     if (FloorTileBP)
     {
         AFloorTile* TileRef = GetWorld()->SpawnActor<AFloorTile>(FloorTileBP, GetTransform());
@@ -38,3 +38,122 @@ void ALvlGenerator::SpawnFloorTile()
     }
 
 }
+
+void ALvlGenerator::SpawnWallTile(float ZRotation)
+{
+    FVector NewLocation = GetActorLocation();
+    FRotator NewRotation = FRotator(0, ZRotation, 0);
+    FQuat QuatRotation = FQuat(NewRotation);
+
+    if (WallTileBP)
+    {
+        AWallTile* TileRef = GetWorld()->SpawnActor<AWallTile>(WallTileBP, GetTransform());
+
+        TileRef->AddActorLocalRotation(QuatRotation);
+        //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Rotation = %f"), ZRotation));
+        //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("WallTileSpawned"));
+    }
+}
+
+void ALvlGenerator::SpawnCornerTile(float ZRotation)
+{
+    FVector NewLocation = GetActorLocation();
+    FRotator NewRotation = FRotator(0, ZRotation, 0);
+    FQuat QuatRotation = FQuat(NewRotation);
+
+    if (CornerTileBP)
+    {
+        ACornerTile* TileRef = GetWorld()->SpawnActor<ACornerTile>(CornerTileBP, GetTransform());
+
+        TileRef->AddActorLocalRotation(QuatRotation);
+        //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Rotation = %f"), ZRotation));
+        //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("WallTileSpawned"));
+    }
+}
+
+void ALvlGenerator::GenerateLvl(int SizeX, int SizeY)
+{
+    int CoordX = SizeX;
+    int CoordY = SizeY;
+    int PrevY;
+    FVector SpawnPoint;
+    FVector PrevSpawnPoint;
+    FVector OriginSpawnPoint;
+
+
+    SpawnPoint = GetActorLocation();
+    OriginSpawnPoint = SpawnPoint;
+
+    while (CoordX > 0)
+    {
+        PrevY = CoordY;
+        PrevSpawnPoint = SpawnPoint;
+        while (CoordY > 0)
+        {
+            SpawnPoint += FVector(0, TileSize, 0);
+            SetActorLocation(SpawnPoint);
+            SpawnFloorTile();
+            CoordY--;
+        }
+        CoordX--;
+        CoordY = PrevY--;
+        SpawnPoint = PrevSpawnPoint + FVector(TileSize, 0, 0);
+    }
+    SetActorLocation(OriginSpawnPoint);
+}
+
+void ALvlGenerator::GenerateWalls(int SizeX, int SizeY)
+{
+    int CoordX = SizeX;
+    int CoordY = SizeY;
+   
+    FVector SpawnPoint;
+    FVector OriginSpawnPoint;
+    SpawnPoint = GetActorLocation();
+
+    while (CoordX > 0)
+    {
+        SpawnPoint += FVector(0, TileSize, 0);
+        SetActorLocation(SpawnPoint);
+        if (CoordX == 1)
+            SpawnCornerTile(-90);
+        else
+            SpawnWallTile(-90);
+        CoordX--;
+    }
+    //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("First Wall"));
+    while (CoordY > 1)
+    {
+        SpawnPoint += FVector(TileSize, 0, 0);
+        SetActorLocation(SpawnPoint);
+        if (CoordY == 2)
+            SpawnCornerTile(180);
+        else
+            SpawnWallTile(180);
+        CoordY--;
+    }
+    //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Second Wall"));
+    while (CoordX < SizeX - 1)
+    {
+        SpawnPoint += FVector(0, -TileSize, 0);
+        SetActorLocation(SpawnPoint);
+        if (CoordX == SizeX - 2)
+            SpawnCornerTile(90);
+        else
+            SpawnWallTile(90);
+        CoordX++;
+    }
+    //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Third Wall"));
+    while (CoordY < SizeY)
+    {
+        SpawnPoint += FVector(-TileSize, 0, 0);
+        SetActorLocation(SpawnPoint);
+        if (CoordY == SizeY - 1)
+            SpawnCornerTile(0);
+        else
+            SpawnWallTile(0);
+        CoordY++;
+    }
+    //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Fourth Wall"));
+}
+

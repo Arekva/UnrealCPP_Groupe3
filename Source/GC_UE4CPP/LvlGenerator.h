@@ -5,6 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "FloorTile.h"
+#include "ArchTile.h"
+#include "WallTile.h"
+#include "CornerTile.h"
+
 #include "LvlGenerator.generated.h"
 
 
@@ -30,8 +34,27 @@ public:
 
 private:
 
-	UFUNCTION()
-		void SpawnFloorTile();
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AFloorTile> FloorTileBP;
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AWallTile> WallTileBP;
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<ACornerTile> CornerTileBP;
+	UPROPERTY(EditDefaultsOnly)
+		int LvlSizeX = 10;
+	UPROPERTY(EditDefaultsOnly)
+		int LvlSizeY = 10;
+	UPROPERTY(VisibleAnywhere)
+		float TileSize = 200;
+
+	UFUNCTION()
+		void SpawnFloorTile();
+	UFUNCTION()
+		void SpawnWallTile(float ZRotation);
+	UFUNCTION()
+		void GenerateLvl(int SizeX, int SizeY);
+	UFUNCTION()
+		void GenerateWalls(int SizeX, int SizeY);
+	UFUNCTION()
+		void SpawnCornerTile(float ZRotation);
 };
