@@ -1,10 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "MyCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "MyCharacter.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -12,6 +12,9 @@ AMyCharacter::AMyCharacter()
 	RotationSpeed = 540;
 	SpringArmLength = 300;
 	SpringArmHeight = 170;
+	MinCameraZoom = 50;
+	MaxCameraZoom = 500;
+	ZoomSpeed = 100;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -59,6 +62,7 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("MoveRight", this, &AMyCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+	PlayerInputComponent->BindAxis("CameraZoom", this, &AMyCharacter::CameraZoom);
 }
 
 void AMyCharacter::MoveForward(float AxisValue)
@@ -87,5 +91,13 @@ void AMyCharacter::MoveRight(float AxisValue)
 		const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 		// Add movement in that direction
 		AddMovementInput(Direction, AxisValue);
+	}
+}
+
+void AMyCharacter::CameraZoom(float AxisValue)
+{
+	if ((SpringArmComp->TargetArmLength >= MinCameraZoom && SpringArmComp->TargetArmLength <= MaxCameraZoom) || (SpringArmComp->TargetArmLength <= MinCameraZoom && AxisValue > 0) || (SpringArmComp->TargetArmLength >= MaxCameraZoom && AxisValue < 0))
+	{
+		SpringArmComp->TargetArmLength += AxisValue * ZoomSpeed;
 	}
 }
