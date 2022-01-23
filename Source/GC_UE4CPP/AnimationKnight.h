@@ -44,6 +44,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "MyAnim")
         void AnimNotify_Picking2(UAnimNotify* Notify);
 
+    UFUNCTION(BlueprintCallable, Category = "MyAnim")
+        void AnimNotify_Grab(UAnimNotify* Notify);
+
 private:
     APawn* Owner;
 

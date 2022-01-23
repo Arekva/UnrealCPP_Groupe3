@@ -67,3 +67,15 @@ void UAnimationKnight::AnimNotify_Picking2(UAnimNotify* Notify)
         PlayerCharacter->IsPicking = false;
     }
 }
+
+void UAnimationKnight::AnimNotify_Grab(UAnimNotify* Notify)
+{
+    if (PlayerCharacter->IsCarrying)
+    {
+        PlayerCharacter->PickableFood->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+    }
+    else
+    {
+        PlayerCharacter->PickableFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+    }
+}

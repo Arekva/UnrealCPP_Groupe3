@@ -112,13 +112,11 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = false;
-			PickableFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		}
 		else if (IsFoodPickable)
 		{
 			IsPicking = true;
 			IsCarrying = true;
-			PickableFood->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
 		}
 	}
 }
