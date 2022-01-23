@@ -4,14 +4,19 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
-#include "PatrollerAIController.generated.h"
+#include "BehaviorTree/BehaviorTree.h"
+
+#include "PatrollerAI.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API APatrollerAIController : public AAIController
+class GC_UE4CPP_API APatrollerAI : public AAIController
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(EditAnywhere)
+		UBehaviorTree* Tree;
 };

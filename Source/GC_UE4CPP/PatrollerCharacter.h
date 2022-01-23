@@ -4,39 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
-#include "MyCharacter.generated.h"
+#include "PatrollerAI.h"
+#include "PatrollerCharacter.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AMyCharacter : public ACharacter
+class GC_UE4CPP_API APatrollerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this character's properties
-	AMyCharacter();
+	APatrollerCharacter();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-		class UCameraComponent* CameraComp;
-
-	void MoveForward(float AxisValue);
-
-	void MoveRight(float AxisValue);
-	
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
-		class USpringArmComponent* SpringArmComp;
-
-	UPROPERTY()
-		float RotationSpeed;
-
-	UPROPERTY()
-		float SpringArmLength;
-
-	UPROPERTY()
-		float SpringArmHeight;
 
 public:	
 	// Called every frame
