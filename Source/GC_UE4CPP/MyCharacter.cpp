@@ -15,6 +15,8 @@ AMyCharacter::AMyCharacter()
 	MinCameraZoom = 50;
 	MaxCameraZoom = 500;
 	ZoomSpeed = 100;
+	IsPicking = false;
+	IsFoodPickable = false;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -29,7 +31,6 @@ AMyCharacter::AMyCharacter()
 
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 
-	CameraComp->SetupAttachment(GetMesh());
 	SpringArmComp->SetupAttachment(GetMesh());
 
 	SpringArmComp->bUsePawnControlRotation = true;
@@ -63,11 +64,12 @@ void AMyCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("CameraZoom", this, &AMyCharacter::CameraZoom);
+	PlayerInputComponent->BindAction("PickUp", IE_Pressed, this, &AMyCharacter::PickUp);
 }
 
 void AMyCharacter::MoveForward(float AxisValue)
 {
-	if ((Controller != nullptr) && (AxisValue != 0.0f))
+	if ((Controller != nullptr) && (AxisValue != 0.0f) && !IsPicking)
 	{
 		// Find out which way is forward
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -81,7 +83,7 @@ void AMyCharacter::MoveForward(float AxisValue)
 
 void AMyCharacter::MoveRight(float AxisValue)
 {
-	if ((Controller != nullptr) && (AxisValue != 0.0f))
+	if ((Controller != nullptr) && (AxisValue != 0.0f) && !IsPicking)
 	{
 		// Find out which way is right
 		const FRotator Rotation = Controller->GetControlRotation();
@@ -99,5 +101,24 @@ void AMyCharacter::CameraZoom(float AxisValue)
 	if ((SpringArmComp->TargetArmLength >= MinCameraZoom && SpringArmComp->TargetArmLength <= MaxCameraZoom) || (SpringArmComp->TargetArmLength <= MinCameraZoom && AxisValue > 0) || (SpringArmComp->TargetArmLength >= MaxCameraZoom && AxisValue < 0))
 	{
 		SpringArmComp->TargetArmLength += AxisValue * ZoomSpeed;
+	}
+}
+
+void AMyCharacter::PickUp()
+{
+	if (!IsPicking)
+	{
+		if (IsCarrying)
+		{
+			IsPicking = true;
+			IsCarrying = false;
+			PickableFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+		}
+		else if (IsFoodPickable)
+		{
+			IsPicking = true;
+			IsCarrying = true;
+			PickableFood->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+		}
 	}
 }
