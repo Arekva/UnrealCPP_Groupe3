@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Food.h"
 #include "AIEnemy.generated.h"
 
 UCLASS()
@@ -20,7 +21,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
-		void OnCharacterCaught(APawn* Caught);
+		void OnCharacterSeen(APawn* Caught);
 
 public:	
 	// Called to bind functionality to input
@@ -31,4 +32,10 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = AI)
 		class UPawnSensingComponent* PawnSensingComponent;
+
+	bool IsCarrying;
+
+	bool IsPicking;
+
+	TArray<AFood*> PickableFood;
 };

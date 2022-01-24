@@ -18,12 +18,12 @@ public:
 	UPROPERTY(EditAnywhere)
 		float SphereRadius;
 
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* StaticMesh;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* StaticMesh;
 
 	UPROPERTY(VisibleAnywhere)
 		class USphereComponent* SphereComp;

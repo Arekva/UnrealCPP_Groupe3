@@ -42,11 +42,7 @@ void AFood::Pickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActo
 	AMyCharacter* actor = Cast<AMyCharacter>(OtherActor);
 	if (actor)
 	{
-		if (!actor->IsCarrying)
-		{
-			actor->IsFoodPickable = true;
-			actor->PickableFood = this;
-		}
+		actor->PickableFood.Add(this);
 	}
 }
 
@@ -55,6 +51,6 @@ void AFood::Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 	AMyCharacter* actor = Cast<AMyCharacter>(OtherActor);
 	if (actor)
 	{
-		actor->IsFoodPickable = false;
+		actor->PickableFood.Remove(this);
 	}
 }

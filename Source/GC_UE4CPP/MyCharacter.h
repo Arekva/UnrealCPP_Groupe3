@@ -63,8 +63,6 @@ public:
 
 	bool IsPicking;
 
-	bool IsFoodPickable;
-
-	AFood* PickableFood;
+	TArray<AFood*> PickableFood;
 
 };

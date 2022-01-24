@@ -19,7 +19,7 @@ void AAIEnemy::BeginPlay()
 	
 	if (PawnSensingComponent)
 	{
-		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AAIEnemy::OnCharacterCaught);
+		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AAIEnemy::OnCharacterSeen);
 	}
 }
 
@@ -30,7 +30,7 @@ void AAIEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AAIEnemy::OnCharacterCaught(APawn* Caught)
+void AAIEnemy::OnCharacterSeen(APawn* Caught)
 {
 	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(GetController());
 

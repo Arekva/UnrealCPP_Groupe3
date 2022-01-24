@@ -16,7 +16,6 @@ AMyCharacter::AMyCharacter()
 	MaxCameraZoom = 500;
 	ZoomSpeed = 100;
 	IsPicking = false;
-	IsFoodPickable = false;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -113,7 +112,7 @@ void AMyCharacter::PickUp()
 			IsPicking = true;
 			IsCarrying = false;
 		}
-		else if (IsFoodPickable)
+		else if (PickableFood[0])
 		{
 			IsPicking = true;
 			IsCarrying = true;
