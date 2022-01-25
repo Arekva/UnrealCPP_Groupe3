@@ -4,6 +4,7 @@
 #include "AIEnemy.h"
 #include "Perception/PawnSensingComponent.h"
 #include "AIEnemyController.h"
+#include "GC_UE4CPPGameModeBase.h"
 
 // Sets default values
 AAIEnemy::AAIEnemy()
@@ -36,7 +37,11 @@ void AAIEnemy::OnCharacterSeen(APawn* Caught)
 
 	if (EnemyController)
 	{
-		GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Cheh !"));
 		EnemyController->SetCharacterCaught(Caught);
+		if (FVector::Distance(GetActorLocation(), Caught->GetActorLocation()) < 100)
+		{
+			AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+			GameMode->Defeat();
+		}
 	}
 }

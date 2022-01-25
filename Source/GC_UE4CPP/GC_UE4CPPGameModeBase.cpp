@@ -2,4 +2,21 @@
 
 
 #include "GC_UE4CPPGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
+#include "MyCharacter.h"
+#include "AnimationKnight.h"
 
+AGC_UE4CPPGameModeBase::AGC_UE4CPPGameModeBase()
+{
+
+}
+
+void AGC_UE4CPPGameModeBase::Defeat()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Cheh !"));
+	AMyCharacter* Player = Cast<AMyCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	Player->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	Player->IsFinished = true;
+	Player->Won = false;
+}
