@@ -8,6 +8,7 @@
 #include "ArchTile.h"
 #include "WallTile.h"
 #include "CornerTile.h"
+#include "FoodTile.h"
 
 #include "LvlGenerator.generated.h"
 
@@ -41,12 +42,18 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<ACornerTile> CornerTileBP;
 	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AFoodTile> FoodTileBP;
+	UPROPERTY(EditDefaultsOnly)
 		int LvlSizeX = 10;
 	UPROPERTY(EditDefaultsOnly)
 		int LvlSizeY = 10;
 	UPROPERTY(VisibleAnywhere)
 		float TileSize = 200;
+	UPROPERTY(VisibleAnywhere)
+		int TotalFoodTiles = 5;
 
+	UFUNCTION()
+		void SpawnTile(int TileAvailable);
 	UFUNCTION()
 		void SpawnFloorTile();
 	UFUNCTION()
@@ -57,4 +64,8 @@ private:
 		void GenerateWalls(int SizeX, int SizeY);
 	UFUNCTION()
 		void SpawnCornerTile(float ZRotation);
+	UFUNCTION()
+		void SpawnFoodTile();
+
+	int PlacedFoodTiles = 0;
 };
