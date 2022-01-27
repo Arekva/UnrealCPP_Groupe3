@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/PlayerController.h"
 #include "Food.h"
 #include "MyCharacter.generated.h"
 
@@ -52,19 +53,28 @@ protected:
 	UPROPERTY(EditAnywhere)
 		float ZoomSpeed;
 
+	// UI de mort
+	UPROPERTY(EditDefaultsOnly);
+		TSubclassOf<class UUserWidget> DeathUIClass;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent);
 
 	bool IsCarrying;
 
 	bool IsPicking;
 
-	bool IsFoodPickable;
+	bool IsFinished;
 
-	AFood* PickableFood;
+	bool Won;
 
+	TArray<AFood*> PickableFood;
+
+	int FoodCounter;
+
+	class UUserWidget* DepthUI;
 };

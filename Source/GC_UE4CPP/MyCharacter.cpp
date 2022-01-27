@@ -1,6 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyCharacter.h"
+// UI
+#include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
+//
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -16,7 +20,8 @@ AMyCharacter::AMyCharacter()
 	MaxCameraZoom = 500;
 	ZoomSpeed = 100;
 	IsPicking = false;
-	IsFoodPickable = false;
+	IsFinished = false;
+	Won = false;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -39,6 +44,14 @@ AMyCharacter::AMyCharacter()
 	SpringArmComp->SetRelativeLocation(FVector(0, 0, SpringArmHeight));
 
 	CameraComp->AttachToComponent(SpringArmComp, FAttachmentTransformRules::KeepRelativeTransform);
+
+
+
+	/* UI de mort - Arthur */
+																	/* faut trouver sur quoi créer l'UI... pff */
+	// this->DepthUI = CreateWidget(UGameplayStatics::GetGameInstance(GEngine->GetWorld()->GetGameInstance()), DeathUIClass);
+	// this->DepthUI->AddToViewport();
+
 }
 
 // Called when the game starts or when spawned
@@ -112,13 +125,11 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = false;
-			PickableFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		}
-		else if (IsFoodPickable)
+		else if (FoodCounter != 0)
 		{
 			IsPicking = true;
 			IsCarrying = true;
-			PickableFood->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
 		}
 	}
 }

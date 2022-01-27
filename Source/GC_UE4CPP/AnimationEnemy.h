@@ -4,18 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
-#include "MyCharacter.h"
-#include "AnimationKnight.generated.h"
+#include "AIEnemy.h"
+#include "AnimationEnemy.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class GC_UE4CPP_API UAnimationKnight : public UAnimInstance
+class GC_UE4CPP_API UAnimationEnemy : public UAnimInstance
 {
 	GENERATED_BODY()
 
 public:
+    UAnimationEnemy();
+
+    virtual void NativeInitializeAnimation() override;
+
+    virtual void NativeUpdateAnimation(float DeltaTimeX) override;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
         bool IsWalking;
 
@@ -29,14 +35,7 @@ public:
         bool Won;
 
     UPROPERTY()
-    AMyCharacter* PlayerCharacter;
-
-public:
-    UAnimationKnight();
-
-    virtual void NativeInitializeAnimation() override;
-
-    virtual void NativeUpdateAnimation(float DeltaTimeX) override;
+        AAIEnemy* Enemy;
 
     UFUNCTION(BlueprintCallable, Category = "MyAnim")
         void AnimNotify_Picking1(UAnimNotify* Notify);
