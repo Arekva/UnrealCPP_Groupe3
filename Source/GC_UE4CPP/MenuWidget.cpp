@@ -18,13 +18,6 @@ void UMenuWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
 
-	// ItemTitle can be nullptr if we haven't created it in the
-	// Blueprint subclass
-	/*if (ItemTitle)
-	{
-		ItemTitle->SetText(FText::FromString(TEXT("Hello world!")));
-	}*/
-
 	StartButton->OnClicked.AddDynamic(this, &UMenuWidget::OnStartClick);
 	QuitButton->OnClicked.AddDynamic(this, &UMenuWidget::OnQuitClick);
 }

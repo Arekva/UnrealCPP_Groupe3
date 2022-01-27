@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "MyCharacter.h"
 #include "AnimationKnight.h"
+#include "Blueprint/UserWidget.h"
 
 AGC_UE4CPPGameModeBase::AGC_UE4CPPGameModeBase()
 {
@@ -19,4 +20,5 @@ void AGC_UE4CPPGameModeBase::Defeat()
 
 	Player->IsFinished = true;
 	Player->Won = false;
+	Player->DepthUI->SetVisibility(ESlateVisibility::Visible);
 }
