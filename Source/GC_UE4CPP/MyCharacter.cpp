@@ -48,7 +48,8 @@ AMyCharacter::AMyCharacter()
 
 
 	/* UI de mort - Arthur */
-	// this->DepthUI = CreateWidget(UGameplayStatics::GetGameInstance(GetWorld()), DeathUIClass);
+																	/* faut trouver sur quoi créer l'UI... pff */
+	// this->DepthUI = CreateWidget(UGameplayStatics::GetGameInstance(GEngine->GetWorld()->GetGameInstance()), DeathUIClass);
 	// this->DepthUI->AddToViewport();
 
 }
