@@ -20,5 +20,6 @@ void AGC_UE4CPPGameModeBase::Defeat()
 
 	Player->IsFinished = true;
 	Player->Won = false;
-	Player->DepthUI->SetVisibility(ESlateVisibility::Visible);
+	// Mort
+	// Player->DepthUI->SetVisibility(ESlateVisibility::Visible);
 }
