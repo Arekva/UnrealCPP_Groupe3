@@ -3,14 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
-
+#include "GameFramework/PlayerController.h"
 #include "Blueprint/UserWidget.h"
 
 #include "AMainMenu.generated.h"
 
 UCLASS()
-class GC_UE4CPP_API AAMainMenu : public AActor
+class GC_UE4CPP_API AAMainMenu : public APlayerController
 {
 	GENERATED_BODY()
 	
@@ -19,7 +18,9 @@ public:
 	AAMainMenu();
 
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<UUserWidget> UI;
+		TSubclassOf<UUserWidget> UIClass;
+
+	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 
 	UUserWidget* UIInstance;
 
@@ -27,9 +28,4 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
 };

@@ -15,13 +15,10 @@ AAMainMenu::AAMainMenu()
 void AAMainMenu::BeginPlay()
 {
 	Super::BeginPlay();
-	
-}
 
-// Called every frame
-void AAMainMenu::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
+	UIInstance = CreateWidget(this, UIClass);
 
+	UIInstance->AddToViewport();
+	UIInstance->SetVisibility(ESlateVisibility::Visible);
 }
 
