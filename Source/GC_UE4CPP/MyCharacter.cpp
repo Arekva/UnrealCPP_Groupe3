@@ -16,7 +16,8 @@ AMyCharacter::AMyCharacter()
 	MaxCameraZoom = 500;
 	ZoomSpeed = 100;
 	IsPicking = false;
-	IsFoodPickable = false;
+	IsFinished = false;
+	Won = false;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -112,13 +113,11 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = false;
-			PickableFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 		}
-		else if (IsFoodPickable)
+		else if (FoodCounter != 0)
 		{
 			IsPicking = true;
 			IsCarrying = true;
-			PickableFood->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
 		}
 	}
 }

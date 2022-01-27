@@ -39,22 +39,20 @@ void AFood::Tick(float DeltaTime)
 
 void AFood::Pickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	AMyCharacter* actor = Cast<AMyCharacter>(OtherActor);
-	if (actor)
+	AMyCharacter* Actor = Cast<AMyCharacter>(OtherActor);
+	if (Actor)
 	{
-		if (!actor->IsCarrying)
-		{
-			actor->IsFoodPickable = true;
-			actor->PickableFood = this;
-		}
+		Actor->PickableFood.Add(this);
+		Actor->FoodCounter++;
 	}
 }
 
 void AFood::Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	AMyCharacter* actor = Cast<AMyCharacter>(OtherActor);
-	if (actor)
+	AMyCharacter* Actor = Cast<AMyCharacter>(OtherActor);
+	if (Actor)
 	{
-		actor->IsFoodPickable = false;
+		Actor->PickableFood.Remove(this);
+		Actor->FoodCounter--;
 	}
 }

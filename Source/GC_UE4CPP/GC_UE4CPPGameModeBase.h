@@ -14,4 +14,9 @@ class GC_UE4CPP_API AGC_UE4CPPGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
 	
+public:
+	AGC_UE4CPPGameModeBase();
+
+	void Defeat();
+
 };

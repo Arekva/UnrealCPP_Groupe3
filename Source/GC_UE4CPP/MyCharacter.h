@@ -63,8 +63,12 @@ public:
 
 	bool IsPicking;
 
-	bool IsFoodPickable;
+	bool IsFinished;
 
-	AFood* PickableFood;
+	bool Won;
+
+	TArray<AFood*> PickableFood;
+
+	int FoodCounter;
 
 };
