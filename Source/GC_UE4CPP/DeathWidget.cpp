@@ -7,6 +7,7 @@
 
 void UDeathWidget::OnRestartClick()
 {
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(false);
 	UGameplayStatics::OpenLevel(GetWorld(), "bapti");
 }
 
