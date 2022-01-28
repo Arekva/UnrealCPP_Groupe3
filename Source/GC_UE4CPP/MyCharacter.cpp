@@ -4,6 +4,7 @@
 // UI
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
+#include "DeathWidget.h"
 //
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -44,14 +45,6 @@ AMyCharacter::AMyCharacter()
 	SpringArmComp->SetRelativeLocation(FVector(0, 0, SpringArmHeight));
 
 	CameraComp->AttachToComponent(SpringArmComp, FAttachmentTransformRules::KeepRelativeTransform);
-
-
-
-	/* UI de mort - Arthur */
-																	/* faut trouver sur quoi créer l'UI... pff */
-	// this->DepthUI = CreateWidget(UGameplayStatics::GetGameInstance(GEngine->GetWorld()->GetGameInstance()), DeathUIClass);
-	// this->DepthUI->AddToViewport();
-
 }
 
 // Called when the game starts or when spawned
@@ -59,6 +52,13 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	/* UI de mort - Arthur */
+
+	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	DepthUI = CreateWidget(pc, DeathUIClass);
+	DepthUI->AddToViewport();
+
+	DepthUI->SetVisibility(ESlateVisibility::Hidden);
 }
 
 // Called every frame

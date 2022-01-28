@@ -2,6 +2,7 @@
 
 
 #include "AMainMenu.h"
+#include <Kismet/GameplayStatics.h>
 
 // Sets default values
 AAMainMenu::AAMainMenu()
@@ -20,5 +21,6 @@ void AAMainMenu::BeginPlay()
 
 	UIInstance->AddToViewport();
 	UIInstance->SetVisibility(ESlateVisibility::Visible);
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(true);
 }
 
