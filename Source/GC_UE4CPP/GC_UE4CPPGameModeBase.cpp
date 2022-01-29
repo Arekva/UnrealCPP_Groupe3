@@ -9,7 +9,8 @@
 
 AGC_UE4CPPGameModeBase::AGC_UE4CPPGameModeBase()
 {
-
+	FoodCounter = 0;
+	Objective = 5;
 }
 
 void AGC_UE4CPPGameModeBase::Defeat()
@@ -22,4 +23,23 @@ void AGC_UE4CPPGameModeBase::Defeat()
 	Player->Won = false;
 	// Mort
 	// Player->DepthUI->SetVisibility(ESlateVisibility::Visible);
+}
+
+void AGC_UE4CPPGameModeBase::Victory()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Yay !"));
+	AMyCharacter* Player = Cast<AMyCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	Player->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+	Player->IsFinished = true;
+	Player->Won = true;
+}
+
+void AGC_UE4CPPGameModeBase::SetFood()
+{
+	FoodCounter++;
+	if (FoodCounter == Objective)
+	{
+		Victory();
+	}
 }

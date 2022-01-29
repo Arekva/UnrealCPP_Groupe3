@@ -19,4 +19,14 @@ public:
 
 	void Defeat();
 
+	void Victory();
+
+	void SetFood();
+
+private:
+	int FoodCounter;
+
+	UPROPERTY(EditAnywhere)
+		int Objective;
+
 };
