@@ -10,6 +10,8 @@
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DepositSlot.h"
+#include "GC_UE4CPPGameModeBase.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -23,6 +25,7 @@ AMyCharacter::AMyCharacter()
 	IsPicking = false;
 	IsFinished = false;
 	Won = false;
+	IsDepositable = false;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -125,6 +128,11 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = false;
+			if (IsDepositable)
+			{
+				AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+				GameMode->SetFood();
+			}
 		}
 		else if (FoodCounter != 0)
 		{
