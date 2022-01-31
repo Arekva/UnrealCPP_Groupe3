@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Blueprint/UserWidget.h"
 #include "DeathWidget.h"
+#include "VictoryWidget.h"
 //
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -58,10 +59,14 @@ void AMyCharacter::BeginPlay()
 	/* UI de mort - Arthur */
 
 	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
 	DepthUI = CreateWidget(pc, DeathUIClass);
 	DepthUI->AddToViewport();
-
 	DepthUI->SetVisibility(ESlateVisibility::Hidden);
+
+	VictoryUI = CreateWidget(pc, VictoryUIClass);
+	VictoryUI->AddToViewport();
+	VictoryUI->SetVisibility(ESlateVisibility::Hidden);
 }
 
 // Called every frame
