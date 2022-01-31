@@ -33,10 +33,16 @@ void AGC_UE4CPPGameModeBase::Victory()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, TEXT("Yay !"));
 	AMyCharacter* Player = Cast<AMyCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	Player->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+
+
+	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	Player->DisableInput(pc);
 
 	Player->IsFinished = true;
 	Player->Won = true;
+
+	Player->VictoryUI->SetVisibility(ESlateVisibility::Visible);
+	pc->SetShowMouseCursor(true);
 }
 
 void AGC_UE4CPPGameModeBase::SetFood()

@@ -55,7 +55,9 @@ protected:
 
 	// UI de mort
 	UPROPERTY(EditDefaultsOnly);
-		TSubclassOf<class UUserWidget> DeathUIClass;
+	TSubclassOf<class UUserWidget> DeathUIClass;
+	UPROPERTY(EditDefaultsOnly);
+	TSubclassOf<class UUserWidget> VictoryUIClass;
 
 public:	
 	// Called every frame
@@ -79,4 +81,5 @@ public:
 	int FoodCounter;
 
 	class UUserWidget* DepthUI;
+	class UUserWidget* VictoryUI;
 };
