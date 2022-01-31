@@ -17,7 +17,7 @@ class GC_UE4CPP_API UDeathWidget : public UUserWidget
 protected:
 	virtual void NativeConstruct() override;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	class UButton* RestartButton;
 
 private:

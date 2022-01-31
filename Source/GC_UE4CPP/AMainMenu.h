@@ -20,8 +20,7 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<UUserWidget> UIClass;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
-
+	UPROPERTY(meta = (BindWidget))
 	UUserWidget* UIInstance;
 
 

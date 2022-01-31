@@ -16,19 +16,14 @@ UCLASS()
 class GC_UE4CPP_API UMenuWidget : public UUserWidget
 {
 	GENERATED_BODY()
-
-public:
-	UPROPERTY(EditAnywhere)
-		ULevel* Level;
-
 	
 protected:
 	virtual void NativeConstruct() override;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	class UButton* StartButton;
 
-	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
+	UPROPERTY(meta = (BindWidget))
 	class UButton* QuitButton;
 
 private:
