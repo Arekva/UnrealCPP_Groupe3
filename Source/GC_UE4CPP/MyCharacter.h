@@ -72,6 +72,8 @@ public:
 
 	bool Won;
 
+	bool IsDepositable;
+
 	TArray<AFood*> PickableFood;
 
 	int FoodCounter;
