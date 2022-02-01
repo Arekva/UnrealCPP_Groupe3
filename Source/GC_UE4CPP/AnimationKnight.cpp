@@ -49,6 +49,24 @@ void UAnimationKnight::NativeUpdateAnimation(float DeltaTimeX)
         {
             IsCarrying = false;
         }
+
+        if (PlayerCharacter->IsFinished)
+        {
+            IsFinished = true;
+        }
+        else
+        {
+            IsFinished = false;
+        }
+
+        if (PlayerCharacter->Won)
+        {
+            Won = true;
+        }
+        else
+        {
+            Won = false;
+        }
     }
 }
 
@@ -65,5 +83,17 @@ void UAnimationKnight::AnimNotify_Picking2(UAnimNotify* Notify)
     if (PlayerCharacter->IsCarrying)
     {
         PlayerCharacter->IsPicking = false;
+    }
+}
+
+void UAnimationKnight::AnimNotify_Grab(UAnimNotify* Notify)
+{
+    if (PlayerCharacter->IsCarrying)
+    {
+        PlayerCharacter->PickableFood[0]->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+    }
+    else
+    {
+        PlayerCharacter->PickableFood[0]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     }
 }

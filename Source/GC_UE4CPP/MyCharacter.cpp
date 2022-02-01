@@ -1,10 +1,18 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "MyCharacter.h"
+// UI
+#include "Kismet/GameplayStatics.h"
+#include "Blueprint/UserWidget.h"
+#include "DeathWidget.h"
+#include "VictoryWidget.h"
+//
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "DepositSlot.h"
+#include "GC_UE4CPPGameModeBase.h"
 
 // Sets default values
 AMyCharacter::AMyCharacter()
@@ -16,7 +24,9 @@ AMyCharacter::AMyCharacter()
 	MaxCameraZoom = 500;
 	ZoomSpeed = 100;
 	IsPicking = false;
-	IsFoodPickable = false;
+	IsFinished = false;
+	Won = false;
+	IsDepositable = false;
 
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -46,6 +56,17 @@ void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	/* UI de mort - Arthur */
+
+	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+
+	DepthUI = CreateWidget(pc, DeathUIClass);
+	DepthUI->AddToViewport();
+	DepthUI->SetVisibility(ESlateVisibility::Hidden);
+
+	VictoryUI = CreateWidget(pc, VictoryUIClass);
+	VictoryUI->AddToViewport();
+	VictoryUI->SetVisibility(ESlateVisibility::Hidden);
 }
 
 // Called every frame
@@ -112,13 +133,16 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = false;
-			PickableFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+			if (IsDepositable)
+			{
+				AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+				GameMode->SetFood();
+			}
 		}
-		else if (IsFoodPickable)
+		else if (FoodCounter != 0)
 		{
 			IsPicking = true;
 			IsCarrying = true;
-			PickableFood->AttachToComponent(GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
 		}
 	}
 }
