@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "DeathWidget.h"
 #include "VictoryWidget.h"
+#include "GameWidget.h"
 //
 #include "Camera/CameraComponent.h"
 #include "Components/ArrowComponent.h"
@@ -55,10 +56,15 @@ AMyCharacter::AMyCharacter()
 void AMyCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	/* UI de mort - Arthur */
 
 	APlayerController* pc = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	AGC_UE4CPPGameModeBase* game_mode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+
+	MainUI = CreateWidget(pc, MainUIClass);
+	MainUI->AddToViewport();
+	MainUI->SetVisibility(ESlateVisibility::Visible);
+
+	Cast<UGameWidget>(MainUI)->SetWinFood(game_mode->GetObjective());
 
 	DepthUI = CreateWidget(pc, DeathUIClass);
 	DepthUI->AddToViewport();
@@ -136,7 +142,7 @@ void AMyCharacter::PickUp()
 			if (IsDepositable)
 			{
 				AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-				GameMode->SetFood();
+				Cast<UGameWidget>(MainUI)->SetCurrentFood(GameMode->SetFood());
 			}
 		}
 		else if (FoodCounter != 0)
