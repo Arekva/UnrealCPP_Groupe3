@@ -21,7 +21,9 @@ public:
 
 	void Victory();
 
-	void SetFood();
+	int SetFood();
+
+	int GetObjective();
 
 private:
 	int FoodCounter;
