@@ -32,6 +32,5 @@ void AEnemiSpawn::Spawn()
     if (EnemyBP)
     {
         AAIEnemy* EnemyRef = GetWorld()->SpawnActor<AAIEnemy>(EnemyBP, GetTransform());
-        //GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("TileSpawned"));
     }
 }
