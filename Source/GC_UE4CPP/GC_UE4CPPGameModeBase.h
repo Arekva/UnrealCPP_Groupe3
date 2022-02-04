@@ -37,6 +37,10 @@ public:
 	UFUNCTION()
 	void Victory();
 
+	int SetFood();
+
+	int GetObjective();
+
 private:
 	int FoodCounter;
 
