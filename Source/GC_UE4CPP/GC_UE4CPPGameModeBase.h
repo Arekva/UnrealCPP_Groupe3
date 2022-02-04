@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "AnimationEnemy.h"
 #include "GC_UE4CPPGameModeBase.generated.h"
 
 /**
@@ -13,15 +14,28 @@ UCLASS()
 class GC_UE4CPP_API AGC_UE4CPPGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDefeatSignature);
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictorySignature);
 	
+protected:
+	virtual void BeginPlay() override;
+
 public:
 	AGC_UE4CPPGameModeBase();
 
+	void SetFood();
+
+	FDefeatSignature DefeatDelegate;
+
+	FVictorySignature VictoryDelegate;
+
+	UFUNCTION()
 	void Defeat();
 
+	UFUNCTION()
 	void Victory();
-
-	void SetFood();
 
 private:
 	int FoodCounter;

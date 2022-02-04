@@ -2,6 +2,7 @@
 
 
 #include "AnimationEnemy.h"
+#include "GC_UE4CPPGameModeBase.h"
 
 UAnimationEnemy::UAnimationEnemy()
 {
@@ -9,6 +10,16 @@ UAnimationEnemy::UAnimationEnemy()
     IsCarrying = false;
     IsFinished = false;
     Won = false;
+}
+
+void UAnimationEnemy::NativeBeginPlay()
+{
+    Super::NativeBeginPlay();
+
+    AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+
+    GameMode->DefeatDelegate.AddDynamic(this, &UAnimationEnemy::EnemyVictory);
+    GameMode->VictoryDelegate.AddDynamic(this, &UAnimationEnemy::EnemyDefeat);
 }
 
 void UAnimationEnemy::NativeInitializeAnimation()
@@ -77,4 +88,16 @@ void UAnimationEnemy::AnimNotify_Grab(UAnimNotify* Notify)
     {
         Enemy->PickableFood[0]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     }
+}
+
+void UAnimationEnemy::EnemyVictory()
+{
+    IsFinished = true;
+    Won = true;
+}
+
+void UAnimationEnemy::EnemyDefeat()
+{
+    IsFinished = true;
+    Won = false;
 }

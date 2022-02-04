@@ -6,11 +6,20 @@
 #include "MyCharacter.h"
 #include "AnimationKnight.h"
 #include "Blueprint/UserWidget.h"
+#include "AnimationEnemy.h"
 
 AGC_UE4CPPGameModeBase::AGC_UE4CPPGameModeBase()
 {
 	FoodCounter = 0;
 	Objective = 5;
+}
+
+void AGC_UE4CPPGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	DefeatDelegate.AddDynamic(this, &AGC_UE4CPPGameModeBase::Defeat);
+	VictoryDelegate.AddDynamic(this, &AGC_UE4CPPGameModeBase::Victory);
 }
 
 void AGC_UE4CPPGameModeBase::Defeat()

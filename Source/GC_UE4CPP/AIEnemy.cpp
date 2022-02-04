@@ -41,7 +41,7 @@ void AAIEnemy::OnCharacterSeen(APawn* Caught)
 		if (FVector::Distance(GetActorLocation(), Caught->GetActorLocation()) < 100)
 		{
 			AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-			GameMode->Defeat();
+			GameMode->DefeatDelegate.Broadcast();
 		}
 	}
 }

@@ -18,6 +18,8 @@ class GC_UE4CPP_API UAnimationEnemy : public UAnimInstance
 public:
     UAnimationEnemy();
 
+    virtual void NativeBeginPlay() override;
+
     virtual void NativeInitializeAnimation() override;
 
     virtual void NativeUpdateAnimation(float DeltaTimeX) override;
@@ -46,7 +48,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "MyAnim")
         void AnimNotify_Grab(UAnimNotify* Notify);
 
+    UFUNCTION()
+        void EnemyVictory();
+
+    UFUNCTION()
+        void EnemyDefeat();
+
 private:
     APawn* Owner;
-
 };
