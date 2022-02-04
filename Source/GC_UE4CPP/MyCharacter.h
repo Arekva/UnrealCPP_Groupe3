@@ -53,7 +53,8 @@ protected:
 	UPROPERTY(EditAnywhere)
 		float ZoomSpeed;
 
-	// UI de mort
+	UPROPERTY(EditDefaultsOnly);
+	TSubclassOf<class UUserWidget> MainUIClass;
 	UPROPERTY(EditDefaultsOnly);
 	TSubclassOf<class UUserWidget> DeathUIClass;
 	UPROPERTY(EditDefaultsOnly);
@@ -80,6 +81,11 @@ public:
 
 	int FoodCounter;
 
+
+
+	class UUserWidget* MainUI;
+
 	class UUserWidget* DepthUI;
+
 	class UUserWidget* VictoryUI;
 };

@@ -6,11 +6,20 @@
 #include "MyCharacter.h"
 #include "AnimationKnight.h"
 #include "Blueprint/UserWidget.h"
+#include "AnimationEnemy.h"
 
 AGC_UE4CPPGameModeBase::AGC_UE4CPPGameModeBase()
 {
 	FoodCounter = 0;
 	Objective = 5;
+}
+
+void AGC_UE4CPPGameModeBase::BeginPlay()
+{
+	Super::BeginPlay();
+
+	DefeatDelegate.AddDynamic(this, &AGC_UE4CPPGameModeBase::Defeat);
+	VictoryDelegate.AddDynamic(this, &AGC_UE4CPPGameModeBase::Victory);
 }
 
 void AGC_UE4CPPGameModeBase::Defeat()
@@ -45,11 +54,15 @@ void AGC_UE4CPPGameModeBase::Victory()
 	pc->SetShowMouseCursor(true);
 }
 
-void AGC_UE4CPPGameModeBase::SetFood()
+int AGC_UE4CPPGameModeBase::SetFood()
 {
 	FoodCounter++;
 	if (FoodCounter == Objective)
 	{
 		Victory();
 	}
+
+	return FoodCounter;
 }
+
+int AGC_UE4CPPGameModeBase::GetObjective() { return Objective; }
