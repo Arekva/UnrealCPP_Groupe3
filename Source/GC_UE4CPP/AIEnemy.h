@@ -22,6 +22,8 @@ protected:
 
 	UFUNCTION()
 		void OnCharacterSeen(APawn* Caught);
+	UFUNCTION()
+		void PickUp();
 
 public:	
 	// Called to bind functionality to input
@@ -38,4 +40,5 @@ public:
 	bool IsPicking;
 
 	TArray<AFood*> PickableFood;
+	int FoodCounter;
 };

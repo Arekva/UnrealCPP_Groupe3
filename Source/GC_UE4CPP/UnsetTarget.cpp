@@ -1,17 +1,16 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "DestroyAI.h"
+#include "UnsetTarget.h"
 #include "AIEnemyController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
-EBTNodeResult::Type UDestroyAI::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+EBTNodeResult::Type UUnsetTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 	if (EnemyController)
 	{
-		APawn* EnemyPawn = EnemyController->GetPawn();
-		EnemyPawn->Destroy();
+		//BlackBoardComponent->UnsetValue("Target");
 		return EBTNodeResult::Succeeded;
 	}
 	return EBTNodeResult::Failed;

@@ -23,16 +23,20 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 {
 	if (BlackboardComponent)
 	{
-		//APawn* LastPlayerPos = GetWorld()->SpawnActor<APawn>(Caught, GetTransform());
-		//BlackboardComponent->SetValueAsObject(PlayerKey, LastPlayerPos);
+		if (Caught == PlayerPawn)
+		{
+			BlackboardComponent->SetValueAsVector("PreviousPosition", AIEnemy->GetActorLocation());
+			BlackboardComponent->SetValueAsVector(PlayerKey, Caught->GetActorLocation());
+		}
 	}
 }
 
 void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 {
 	Super::OnPossess(PawnPossessed);
+	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
-	AAIEnemy* AIEnemy = Cast<AAIEnemy>(PawnPossessed);
+	AIEnemy = Cast<AAIEnemy>(PawnPossessed);
 
 	if (AIEnemy)
 	{
