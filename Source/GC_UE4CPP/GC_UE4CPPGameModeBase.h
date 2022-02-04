@@ -25,8 +25,6 @@ protected:
 public:
 	AGC_UE4CPPGameModeBase();
 
-	void SetFood();
-
 	FDefeatSignature DefeatDelegate;
 
 	FVictorySignature VictoryDelegate;
