@@ -23,7 +23,8 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 {
 	if (BlackboardComponent)
 	{
-		BlackboardComponent->SetValueAsObject(PlayerKey, Caught);
+		//APawn* LastPlayerPos = GetWorld()->SpawnActor<APawn>(Caught, GetTransform());
+		//BlackboardComponent->SetValueAsObject(PlayerKey, LastPlayerPos);
 	}
 }
 
