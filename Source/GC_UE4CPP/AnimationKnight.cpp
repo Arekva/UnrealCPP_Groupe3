@@ -3,6 +3,7 @@
 
 #include "AnimationKnight.h"
 #include "MyCharacter.h"
+#include "GC_UE4CPPGameModeBase.h"
 
 UAnimationKnight::UAnimationKnight()
 {
@@ -91,9 +92,13 @@ void UAnimationKnight::AnimNotify_Grab(UAnimNotify* Notify)
     if (PlayerCharacter->IsCarrying)
     {
         PlayerCharacter->PickableFood[0]->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+        GameMode->FoodGrabDelegate.Broadcast(PlayerCharacter->PickableFood[0]);
     }
     else
     {
         PlayerCharacter->PickableFood[0]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+        GameMode->FoodPoseDelegate.Broadcast(PlayerCharacter->PickableFood[0]);
     }
 }

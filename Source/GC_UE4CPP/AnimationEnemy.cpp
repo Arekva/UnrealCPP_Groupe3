@@ -83,10 +83,15 @@ void UAnimationEnemy::AnimNotify_Grab(UAnimNotify* Notify)
     if (Enemy->IsCarrying)
     {
         Enemy->PickableFood[0]->AttachToComponent(Enemy->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+        GameMode->FoodGrabDelegate.Broadcast(Enemy->PickableFood[0]);
     }
     else
     {
         Enemy->PickableFood[0]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+
+        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+        GameMode->FoodPoseDelegate.Broadcast(Enemy->PickableFood[0]);
     }
 }
 

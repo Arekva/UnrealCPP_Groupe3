@@ -28,8 +28,6 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 		class USphereComponent* SphereComp;
 
-	bool IsPickable;
-
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -12,7 +12,6 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereRadius = 100;
-	IsPickable = false;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
 	RootComponent = StaticMesh;
