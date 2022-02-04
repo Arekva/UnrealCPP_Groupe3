@@ -15,6 +15,7 @@ AFood::AFood()
 	IsPickable = false;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+	StaticMesh->SetCollisionProfileName(TEXT("ItemPlayer"));
 	RootComponent = StaticMesh;
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionCollider"));
@@ -29,6 +30,9 @@ void AFood::BeginPlay()
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AFood::Pickable);
 	SphereComp->OnComponentEndOverlap.AddDynamic(this, &AFood::Unpickable);
+
+	SetPhysics(true);
+	//this->SetPhysics(true);
 }
 
 // Called every frame
@@ -55,4 +59,20 @@ void AFood::Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 		Actor->PickableFood.Remove(this);
 		Actor->FoodCounter--;
 	}
+}
+
+void AFood::SetPhysics(bool State)
+{
+	if (State)
+	{
+		StaticMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
+	}
+	else
+	{
+		StaticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
+	StaticMesh->SetSimulatePhysics(State);
+
+	//StaticMesh->SetSimulatePhysics(State);
+	//GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, FString::FromInt(State));
 }

@@ -40,4 +40,6 @@ public:
 	UFUNCTION()
 		void Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
+	UFUNCTION()
+		void SetPhysics(bool State);
 };

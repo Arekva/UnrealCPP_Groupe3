@@ -90,10 +90,10 @@ void UAnimationKnight::AnimNotify_Grab(UAnimNotify* Notify)
 {
     if (PlayerCharacter->IsCarrying)
     {
-        PlayerCharacter->PickableFood[0]->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+        PlayerCharacter->CarriedFood->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
     }
     else
     {
-        PlayerCharacter->PickableFood[0]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        PlayerCharacter->CarriedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
     }
 }

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright noti*ce in the Description page of Project Settings.
 
 #include "MyCharacter.h"
 // UI
@@ -139,6 +139,10 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = false;
+
+			CarriedFood->SetPhysics(true);
+
+
 			if (IsDepositable)
 			{
 				AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
@@ -149,6 +153,14 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = true;
+
+			CarriedFood = PickableFood.GetData()[0];
+			// pick food
+			CarriedFood->SetPhysics(false);
 		}
+	}
+	else
+	{
+		//PickableFood.GetData()[0]->SetPhysics(true);
 	}
 }
