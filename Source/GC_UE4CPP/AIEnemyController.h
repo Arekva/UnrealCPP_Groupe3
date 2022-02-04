@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "EnemiSpawn.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "AIEnemyController.generated.h"
 
@@ -26,6 +27,9 @@ class GC_UE4CPP_API AAIEnemyController : public AAIController
 			FName PlayerKey;
 
 		TArray<AActor*> PatrolPoints;
+	public :
+		AActor* Spawn;
+
 
 		virtual void OnPossess(APawn* PawnPossessed) override;
 

@@ -23,7 +23,8 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 {
 	if (BlackboardComponent)
 	{
-		BlackboardComponent->SetValueAsObject(PlayerKey, Caught);
+		//APawn* LastPlayerPos = GetWorld()->SpawnActor<APawn>(Caught, GetTransform());
+		//BlackboardComponent->SetValueAsObject(PlayerKey, LastPlayerPos);
 	}
 }
 
@@ -40,6 +41,8 @@ void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 			BlackboardComponent->InitializeBlackboard(*(AIEnemy->BehaviorTree->BlackboardAsset));
 		}
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), APatrolPoint::StaticClass(), PatrolPoints);
+		Spawn = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemiSpawn::StaticClass());
+
 
 		BehaviorComponent->StartTree(*AIEnemy->BehaviorTree);
 	}

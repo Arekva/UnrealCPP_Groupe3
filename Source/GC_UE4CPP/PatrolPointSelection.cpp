@@ -4,6 +4,7 @@
 #include "PatrolPointSelection.h"
 #include "AIEnemyController.h"
 #include "PatrolPoint.h"
+#include "EnemiSpawn.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
 EBTNodeResult::Type UPatrolPointSelection::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -20,6 +21,8 @@ EBTNodeResult::Type UPatrolPointSelection::ExecuteTask(UBehaviorTreeComponent& O
 
 		APatrolPoint* NextPatrolPoint = nullptr;
 
+
+
 		if (EnemyController->CurrentPatrolPoint != AvailablePatrolPoints.Num() - 1)
 		{
 			NextPatrolPoint = Cast<APatrolPoint>(AvailablePatrolPoints[++EnemyController->CurrentPatrolPoint]);
@@ -31,6 +34,7 @@ EBTNodeResult::Type UPatrolPointSelection::ExecuteTask(UBehaviorTreeComponent& O
 		}
 
 		BlackboardComponent->SetValueAsObject("Destination", NextPatrolPoint);
+		BlackboardComponent->SetValueAsObject("Spawn", EnemyController->Spawn);
 
 		return EBTNodeResult::Succeeded;
 	}
