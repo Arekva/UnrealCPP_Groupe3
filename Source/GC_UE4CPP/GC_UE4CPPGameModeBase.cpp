@@ -59,7 +59,7 @@ int AGC_UE4CPPGameModeBase::SetFood()
 	FoodCounter++;
 	if (FoodCounter == Objective)
 	{
-		Victory();
+		VictoryDelegate.Broadcast();
 	}
 
 	return FoodCounter;
