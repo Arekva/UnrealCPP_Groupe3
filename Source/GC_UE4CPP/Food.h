@@ -21,6 +21,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* StaticMesh;
 
+	UPROPERTY(EditAnywhere)
+		TArray<UStaticMesh*> FoodMeshes;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

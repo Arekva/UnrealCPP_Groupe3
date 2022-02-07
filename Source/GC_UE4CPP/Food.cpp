@@ -14,7 +14,6 @@ AFood::AFood()
 	SphereRadius = 100;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	RootComponent = StaticMesh;
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionCollider"));
 	SphereComp->SetupAttachment(RootComponent);
@@ -25,6 +24,9 @@ AFood::AFood()
 void AFood::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, 101)]);
+	RootComponent = StaticMesh;
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AFood::Pickable);
 	SphereComp->OnComponentEndOverlap.AddDynamic(this, &AFood::Unpickable);
