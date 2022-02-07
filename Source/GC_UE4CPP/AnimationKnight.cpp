@@ -51,6 +51,15 @@ void UAnimationKnight::NativeUpdateAnimation(float DeltaTimeX)
             IsCarrying = false;
         }
 
+        if (PlayerCharacter->IsPicking)
+        {
+            IsPicking = true;
+        }
+        else
+        {
+            IsPicking = false;
+        }
+
         if (PlayerCharacter->IsFinished)
         {
             IsFinished = true;

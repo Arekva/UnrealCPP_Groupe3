@@ -25,7 +25,7 @@ void AFood::BeginPlay()
 {
 	Super::BeginPlay();
 
-	StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, 101)]);
+	StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, FoodMeshes.Num() - 1)]);
 	RootComponent = StaticMesh;
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AFood::Pickable);
