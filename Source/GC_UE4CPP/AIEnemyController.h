@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "AIController.h"
+#include "EnemiSpawn.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "AIEnemyController.generated.h"
 
@@ -27,6 +28,8 @@ class GC_UE4CPP_API AAIEnemyController : public AAIController
 
 		TArray<AActor*> PatrolPoints;
 
+
+
 		virtual void OnPossess(APawn* PawnPossessed) override;
 
 public:
@@ -39,4 +42,7 @@ public:
 
 	int32 CurrentPatrolPoint = 0;
 
+	AActor* Spawn;
+	APawn* PlayerPawn;
+	AAIEnemy* AIEnemy;
 };

@@ -11,6 +11,7 @@ AAIEnemy::AAIEnemy()
 {
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 	PawnSensingComponent->SetPeripheralVisionAngle(90);
+	IsPicking = false;
 }
 
 // Called when the game starts or when spawned
@@ -41,7 +42,24 @@ void AAIEnemy::OnCharacterSeen(APawn* Caught)
 		if (FVector::Distance(GetActorLocation(), Caught->GetActorLocation()) < 100)
 		{
 			AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-			GameMode->Defeat();
+			GameMode->DefeatDelegate.Broadcast();
+		}
+	}
+}
+
+void AAIEnemy::PickUp()
+{
+	if (!IsPicking)
+	{
+		if (IsCarrying)
+		{
+			IsPicking = true;
+			IsCarrying = false;
+		}
+		else if (FoodCounter != 0)
+		{
+			IsPicking = true;
+			IsCarrying = true;
 		}
 	}
 }

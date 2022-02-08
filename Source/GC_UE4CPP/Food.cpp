@@ -4,6 +4,7 @@
 #include "Food.h"
 #include "Components/SphereComponent.h"
 #include "MyCharacter.h"
+#include "AIEnemy.h"
 
 // Sets default values
 AFood::AFood()
@@ -12,11 +13,8 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereRadius = 100;
-	IsPickable = false;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	StaticMesh->SetCollisionProfileName(TEXT("ItemPlayer"));
-	RootComponent = StaticMesh;
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionCollider"));
 	SphereComp->SetupAttachment(RootComponent);
@@ -27,6 +25,9 @@ AFood::AFood()
 void AFood::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, FoodMeshes.Num() - 1)]);
+	RootComponent = StaticMesh;
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AFood::Pickable);
 	SphereComp->OnComponentEndOverlap.AddDynamic(this, &AFood::Unpickable);
@@ -49,6 +50,15 @@ void AFood::Pickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActo
 		Actor->PickableFood.Add(this);
 		Actor->FoodCounter++;
 	}
+	else
+	{
+		AAIEnemy* Enemy = Cast<AAIEnemy>(OtherActor);
+		if (Enemy)
+		{
+			Enemy->PickableFood.Add(this);
+			Enemy->FoodCounter++;
+		}
+	}
 }
 
 void AFood::Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
@@ -58,6 +68,15 @@ void AFood::Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 	{
 		Actor->PickableFood.Remove(this);
 		Actor->FoodCounter--;
+	}
+	else
+	{
+		AAIEnemy* Enemy = Cast<AAIEnemy>(OtherActor);
+		if (Enemy)
+		{
+			Enemy->PickableFood.Remove(this);
+			Enemy->FoodCounter--;
+		}
 	}
 }
 

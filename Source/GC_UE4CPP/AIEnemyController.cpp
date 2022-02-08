@@ -23,15 +23,24 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 {
 	if (BlackboardComponent)
 	{
-		BlackboardComponent->SetValueAsObject(PlayerKey, Caught);
+		if (Caught == PlayerPawn)
+		{
+			if (!BlackboardComponent->GetValueAsBool("SeenPlayer"))
+				BlackboardComponent->SetValueAsVector("PreviousPosition", AIEnemy->GetActorLocation());
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Saw you !"));
+			BlackboardComponent->SetValueAsVector(PlayerKey, Caught->GetActorLocation());
+			BlackboardComponent->SetValueAsBool("SeenPlayer", true);
+		}
 	}
 }
 
 void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 {
 	Super::OnPossess(PawnPossessed);
+	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
-	AAIEnemy* AIEnemy = Cast<AAIEnemy>(PawnPossessed);
+	AIEnemy = Cast<AAIEnemy>(PawnPossessed);
 
 	if (AIEnemy)
 	{
@@ -40,6 +49,8 @@ void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 			BlackboardComponent->InitializeBlackboard(*(AIEnemy->BehaviorTree->BlackboardAsset));
 		}
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), APatrolPoint::StaticClass(), PatrolPoints);
+		Spawn = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemiSpawn::StaticClass());
+
 
 		BehaviorComponent->StartTree(*AIEnemy->BehaviorTree);
 	}

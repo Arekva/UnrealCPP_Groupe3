@@ -8,7 +8,7 @@
 void UMenuWidget::OnStartClick()
 {
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(false);
-	UGameplayStatics::OpenLevel(GetWorld(), "bapti");
+	UGameplayStatics::OpenLevel(GetWorld(), "LVLDesign");
 }
 void UMenuWidget::OnQuitClick()
 {
