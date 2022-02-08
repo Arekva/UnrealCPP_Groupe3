@@ -29,6 +29,9 @@ private:
 	
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AAIEnemy> EnemyBP;
+	
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AFood> FoodBP;
 
 	UFUNCTION()
 		void Spawn();
