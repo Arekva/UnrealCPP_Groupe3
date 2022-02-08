@@ -2,6 +2,7 @@
 
 
 #include "EnemiSpawn.h"
+#include "GC_UE4CPPGameModeBase.h"
 
 // Sets default values
 AEnemiSpawn::AEnemiSpawn()
@@ -34,7 +35,14 @@ void AEnemiSpawn::Spawn()
         AAIEnemy* EnemyRef = GetWorld()->SpawnActor<AAIEnemy>(EnemyBP, GetTransform());
         if (FoodBP)
         {
-            AFood* FoodRef = GetWorld()->SpawnActor<AFood>(FoodBP, GetTransform());
+            AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+            if (SpawnedFoodCounter - GameMode->FoodCounter < GameMode->Objective)
+            {
+                AFood* FoodRef = GetWorld()->SpawnActor<AFood>(FoodBP, GetTransform());
+                FoodRef->AttachToComponent(EnemyRef->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+                EnemyRef->IsCarrying = true;
+                EnemyRef->PickableFood.Add(FoodRef);
+            }
         }
     }
 }

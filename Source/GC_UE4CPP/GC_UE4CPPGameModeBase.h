@@ -47,7 +47,6 @@ public:
 
 	int GetObjective();
 
-private:
 	int FoodCounter;
 
 	UPROPERTY(EditAnywhere)

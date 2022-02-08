@@ -12,6 +12,7 @@ AAIEnemy::AAIEnemy()
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
 	PawnSensingComponent->SetPeripheralVisionAngle(90);
 	IsPicking = false;
+	FoodCounter = 0;
 }
 
 // Called when the game starts or when spawned

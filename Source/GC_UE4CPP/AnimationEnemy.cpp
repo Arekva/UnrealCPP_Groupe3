@@ -59,6 +59,15 @@ void UAnimationEnemy::NativeUpdateAnimation(float DeltaTimeX)
         {
             IsCarrying = false;
         }
+
+        if (Enemy->IsPicking)
+        {
+            IsPicking = true;
+        }
+        else
+        {
+            IsPicking = false;
+        }
     }
 }
 

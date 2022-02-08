@@ -36,4 +36,6 @@ private:
 	UFUNCTION()
 		void Spawn();
 
+	int SpawnedFoodCounter;
+
 };
