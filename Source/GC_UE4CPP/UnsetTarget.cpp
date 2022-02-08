@@ -10,7 +10,8 @@ EBTNodeResult::Type UUnsetTarget::ExecuteTask(UBehaviorTreeComponent& OwnerComp,
 	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 	if (EnemyController)
 	{
-		//BlackBoardComponent->UnsetValue("Target");
+		UBlackboardComponent* BlackBoardComponent = EnemyController->GetBlackboardComp();
+		BlackBoardComponent->ClearValue("Target");
 		return EBTNodeResult::Succeeded;
 	}
 	return EBTNodeResult::Failed;

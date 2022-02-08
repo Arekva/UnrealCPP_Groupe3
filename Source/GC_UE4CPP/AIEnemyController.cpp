@@ -25,8 +25,12 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 	{
 		if (Caught == PlayerPawn)
 		{
-			BlackboardComponent->SetValueAsVector("PreviousPosition", AIEnemy->GetActorLocation());
+			if (!BlackboardComponent->GetValueAsBool("SeenPlayer"))
+				BlackboardComponent->SetValueAsVector("PreviousPosition", AIEnemy->GetActorLocation());
+
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Saw you !"));
 			BlackboardComponent->SetValueAsVector(PlayerKey, Caught->GetActorLocation());
+			BlackboardComponent->SetValueAsBool("SeenPlayer", true);
 		}
 	}
 }

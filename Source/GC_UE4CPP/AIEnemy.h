@@ -22,8 +22,7 @@ protected:
 
 	UFUNCTION()
 		void OnCharacterSeen(APawn* Caught);
-	UFUNCTION()
-		void PickUp();
+
 
 public:	
 	// Called to bind functionality to input
@@ -34,6 +33,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, Category = AI)
 		class UPawnSensingComponent* PawnSensingComponent;
+
+	UFUNCTION()
+		void PickUp();
 
 	bool IsCarrying;
 
