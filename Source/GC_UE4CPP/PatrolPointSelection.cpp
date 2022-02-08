@@ -22,16 +22,8 @@ EBTNodeResult::Type UPatrolPointSelection::ExecuteTask(UBehaviorTreeComponent& O
 		APatrolPoint* NextPatrolPoint = nullptr;
 
 
+		NextPatrolPoint = Cast<APatrolPoint>(AvailablePatrolPoints[0]);
 
-		if (EnemyController->CurrentPatrolPoint != AvailablePatrolPoints.Num() - 1)
-		{
-			NextPatrolPoint = Cast<APatrolPoint>(AvailablePatrolPoints[++EnemyController->CurrentPatrolPoint]);
-		}
-		else
-		{
-			NextPatrolPoint = Cast<APatrolPoint>(AvailablePatrolPoints[0]);
-			EnemyController->CurrentPatrolPoint = 0;
-		}
 
 		BlackboardComponent->SetValueAsObject("Destination", NextPatrolPoint);
 		BlackboardComponent->SetValueAsObject("Spawn", EnemyController->Spawn);

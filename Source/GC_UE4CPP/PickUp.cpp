@@ -9,15 +9,16 @@
 
 EBTNodeResult::Type UPickUp::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	/*AAIEnemyController* EnemyController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
+	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(OwnerComp.GetAIOwner());
 	if (EnemyController)
 	{
-
-	}*/
-	AAIEnemy* Enemy = Cast<AAIEnemy>(OwnerComp.GetAIOwner());
-	if (Enemy)
-	{
-		Enemy->PickUp();
+		AAIEnemy* Enemy = EnemyController->AIEnemy;
+		if (Enemy)
+		{
+			Enemy->PickUp();
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Ennemy ok"));
+			return EBTNodeResult::Succeeded;
+		}
 	}
 	return EBTNodeResult::Failed;
 }
