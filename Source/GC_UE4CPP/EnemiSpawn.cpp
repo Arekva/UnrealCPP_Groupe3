@@ -32,5 +32,9 @@ void AEnemiSpawn::Spawn()
     if (EnemyBP)
     {
         AAIEnemy* EnemyRef = GetWorld()->SpawnActor<AAIEnemy>(EnemyBP, GetTransform());
+        if (FoodBP)
+        {
+            AFood* FoodRef = GetWorld()->SpawnActor<AFood>(FoodBP, GetTransform());
+        }
     }
 }
