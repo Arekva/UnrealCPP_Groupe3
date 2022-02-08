@@ -12,10 +12,8 @@ AFood::AFood()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereRadius = 100;
-	IsPickable = false;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	RootComponent = StaticMesh;
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionCollider"));
 	SphereComp->SetupAttachment(RootComponent);
@@ -26,6 +24,9 @@ AFood::AFood()
 void AFood::BeginPlay()
 {
 	Super::BeginPlay();
+
+	StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, FoodMeshes.Num() - 1)]);
+	RootComponent = StaticMesh;
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AFood::Pickable);
 	SphereComp->OnComponentEndOverlap.AddDynamic(this, &AFood::Unpickable);

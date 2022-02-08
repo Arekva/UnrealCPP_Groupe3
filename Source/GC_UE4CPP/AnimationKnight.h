@@ -23,6 +23,9 @@ public:
         bool IsCarrying;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
+        bool IsPicking;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")
         bool IsFinished;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animation")

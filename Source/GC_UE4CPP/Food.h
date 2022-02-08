@@ -21,14 +21,15 @@ public:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* StaticMesh;
 
+	UPROPERTY(EditAnywhere)
+		TArray<UStaticMesh*> FoodMeshes;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
 		class USphereComponent* SphereComp;
-
-	bool IsPickable;
 
 public:	
 	// Called every frame

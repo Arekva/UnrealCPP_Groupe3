@@ -18,6 +18,10 @@ class GC_UE4CPP_API AGC_UE4CPPGameModeBase : public AGameModeBase
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDefeatSignature);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictorySignature);
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFoodPoseSignature, AFood*, Food);
+
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFoodGrabSignature, AFood*, Food);
 	
 protected:
 	virtual void BeginPlay() override;
@@ -28,6 +32,10 @@ public:
 	FDefeatSignature DefeatDelegate;
 
 	FVictorySignature VictoryDelegate;
+
+	FFoodPoseSignature FoodPoseDelegate;
+
+	FFoodGrabSignature FoodGrabDelegate;
 
 	UFUNCTION()
 	void Defeat();
