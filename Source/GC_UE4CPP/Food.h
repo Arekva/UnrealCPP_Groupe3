@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/SphereComponent.h"
 #include "Food.generated.h"
 
 UCLASS()
@@ -29,7 +30,7 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(VisibleAnywhere)
-		class USphereComponent* SphereComp;
+		USphereComponent* SphereComp;
 
 public:	
 	// Called every frame
