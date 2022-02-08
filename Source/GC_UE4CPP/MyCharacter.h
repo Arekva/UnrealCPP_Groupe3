@@ -81,6 +81,8 @@ public:
 
 	int FoodCounter;
 
+	AFood* CarriedFood;
+
 
 
 	class UUserWidget* MainUI;
