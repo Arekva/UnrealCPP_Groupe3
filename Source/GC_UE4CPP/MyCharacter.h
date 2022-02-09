@@ -53,6 +53,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 		float ZoomSpeed;
 
+	UPROPERTY(EditAnywhere)
+		float SlowCarryMultiplier;
+
 	UPROPERTY(EditDefaultsOnly);
 	TSubclassOf<class UUserWidget> MainUIClass;
 	UPROPERTY(EditDefaultsOnly);
