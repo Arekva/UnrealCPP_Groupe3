@@ -89,24 +89,24 @@ void UAnimationEnemy::AnimNotify_Picking2(UAnimNotify* Notify)
 
 void UAnimationEnemy::AnimNotify_Grab(UAnimNotify* Notify)
 {
-    if (Enemy->IsCarrying && Enemy->PickableFood.IsValidIndex(0))
+    if (Enemy)
     {
-        Enemy->PickedFood = Enemy->PickableFood[0];
-        Enemy->PickedFood->SetPhysics(false);
-        Enemy->PickedFood->AttachToComponent(Enemy->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
-        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->FoodGrabDelegate.Broadcast(Enemy->PickedFood);
-    }
-    else if (Enemy->PickedFood != nullptr)
-    {
-        Enemy->PickedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-        Enemy->PickedFood->SetPhysics(true);
+        if (Enemy->IsCarrying)
+        {
+            Enemy->PickedFood->AttachToComponent(Enemy->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+            AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+            GameMode->FoodGrabDelegate.Broadcast(Enemy->PickedFood);
+        }
+        else
+        {
+            if (Enemy->PickedFood)
+            {
+                Enemy->PickedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
-        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->FoodPoseDelegate.Broadcast(Enemy->PickedFood);
-
-
-        Enemy->PickedFood = nullptr;
+                AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+                GameMode->FoodPoseDelegate.Broadcast(Enemy->PickedFood);
+            }
+        }
     }
 }
 

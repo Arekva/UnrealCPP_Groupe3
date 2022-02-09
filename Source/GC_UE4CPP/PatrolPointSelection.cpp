@@ -22,7 +22,7 @@ EBTNodeResult::Type UPatrolPointSelection::ExecuteTask(UBehaviorTreeComponent& O
 		APatrolPoint* NextPatrolPoint = nullptr;
 
 
-		NextPatrolPoint = Cast<APatrolPoint>(AvailablePatrolPoints[0]);
+		NextPatrolPoint = Cast<APatrolPoint>(AvailablePatrolPoints[FMath::RandRange(0, 4)]);
 
 
 		BlackboardComponent->SetValueAsObject("Destination", NextPatrolPoint);

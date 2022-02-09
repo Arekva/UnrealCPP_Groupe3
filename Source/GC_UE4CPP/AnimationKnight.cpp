@@ -120,9 +120,10 @@ void UAnimationKnight::AnimNotify_Grab(UAnimNotify* Notify)
             if (PlayerCharacter->CarriedFood)
             {
                 PlayerCharacter->CarriedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+
+                AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+                GameMode->FoodPoseDelegate.Broadcast(PlayerCharacter->CarriedFood);
             }
-            AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-            GameMode->FoodPoseDelegate.Broadcast(PlayerCharacter->CarriedFood);
         }
     }
 }

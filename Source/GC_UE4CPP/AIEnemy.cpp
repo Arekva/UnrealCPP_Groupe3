@@ -56,11 +56,16 @@ void AAIEnemy::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = false;
+
+			PickedFood->SetPhysics(true);
 		}
 		else if (FoodCounter != 0)
 		{
 			IsPicking = true;
 			IsCarrying = true;
+
+			PickedFood = PickableFood.GetData()[0];
+			PickedFood->SetPhysics(false);
 		}
 	}
 }

@@ -43,6 +43,8 @@ void AEnemiSpawn::Spawn()
                 FoodRef->AttachToComponent(EnemyRef->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
                 EnemyRef->IsCarrying = true;
                 EnemyRef->PickableFood.Add(FoodRef);
+                EnemyRef->PickedFood = EnemyRef->PickableFood[0];
+                EnemyRef->FoodCounter++;
             }
         }
     }
