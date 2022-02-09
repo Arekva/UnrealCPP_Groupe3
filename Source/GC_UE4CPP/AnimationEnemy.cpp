@@ -100,11 +100,12 @@ void UAnimationEnemy::AnimNotify_Grab(UAnimNotify* Notify)
     else if (Enemy->PickedFood != nullptr)
     {
         Enemy->PickedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        Enemy->PickedFood->SetPhysics(true);
 
         AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
         GameMode->FoodPoseDelegate.Broadcast(Enemy->PickedFood);
 
-        Enemy->PickedFood->SetPhysics(true);
+
         Enemy->PickedFood = nullptr;
     }
 }

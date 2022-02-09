@@ -39,6 +39,7 @@ void AEnemiSpawn::Spawn()
             if (SpawnedFoodCounter - GameMode->FoodCounter < GameMode->Objective)
             {
                 AFood* FoodRef = GetWorld()->SpawnActor<AFood>(FoodBP, GetTransform());
+                FoodRef->SetPhysics(false);
                 FoodRef->AttachToComponent(EnemyRef->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
                 EnemyRef->IsCarrying = true;
                 EnemyRef->PickableFood.Add(FoodRef);
