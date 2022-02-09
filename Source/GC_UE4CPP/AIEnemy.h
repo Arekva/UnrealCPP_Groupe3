@@ -43,4 +43,6 @@ public:
 
 	TArray<AFood*> PickableFood;
 	int FoodCounter;
+
+	AFood* PickedFood;
 };

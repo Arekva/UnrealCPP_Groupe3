@@ -84,14 +84,9 @@ void AFood::Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 void AFood::SetPhysics(bool State)
 {
-	if (State)
-	{
-		StaticMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	}
-	else
-	{
-		StaticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
+	auto collision_state = State ? ECollisionEnabled::PhysicsOnly : ECollisionEnabled::NoCollision;
+
+	StaticMesh->SetCollisionEnabled(collision_state);
 	StaticMesh->SetSimulatePhysics(State);
 
 	//StaticMesh->SetSimulatePhysics(State);
