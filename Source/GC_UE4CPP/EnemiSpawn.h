@@ -13,9 +13,6 @@ class GC_UE4CPP_API AEnemiSpawn : public AActor
 {
 	GENERATED_BODY()
 	
-public:	
-	// Sets default values for this actor's properties
-	AEnemiSpawn();
 
 protected:
 	// Called when the game starts or when spawned
@@ -24,6 +21,11 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	
+	AEnemiSpawn();
+	
+	UFUNCTION()
+		void Spawn();
 
 private:
 	
@@ -33,8 +35,7 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AFood> FoodBP;
 
-	UFUNCTION()
-		void Spawn();
+
 
 	int SpawnedFoodCounter;
 

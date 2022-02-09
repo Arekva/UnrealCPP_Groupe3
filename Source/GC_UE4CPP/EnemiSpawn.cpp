@@ -16,7 +16,8 @@ AEnemiSpawn::AEnemiSpawn()
 void AEnemiSpawn::BeginPlay()
 {
 	Super::BeginPlay();
-
+    AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+    GameMode->DestroyAiDelegate.AddDynamic(this, &AEnemiSpawn::Spawn);
     Spawn();
 	
 }
