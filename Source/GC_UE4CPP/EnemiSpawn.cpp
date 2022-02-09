@@ -3,6 +3,7 @@
 
 #include "EnemiSpawn.h"
 #include "GC_UE4CPPGameModeBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AEnemiSpawn::AEnemiSpawn()
@@ -45,6 +46,7 @@ void AEnemiSpawn::Spawn()
                 EnemyRef->PickableFood.Add(FoodRef);
                 EnemyRef->PickedFood = EnemyRef->PickableFood[0];
                 EnemyRef->FoodCounter++;
+                EnemyRef->GetCharacterMovement()->MaxWalkSpeed = EnemyRef->GetCharacterMovement()->MaxWalkSpeed * EnemyRef->SlowCarryMultiplier;
             }
         }
     }

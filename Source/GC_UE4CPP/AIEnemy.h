@@ -34,6 +34,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = AI)
 		class UPawnSensingComponent* PawnSensingComponent;
 
+	UPROPERTY(EditAnywhere)
+		float SlowCarryMultiplier;
+
 	UFUNCTION()
 		void PickUp();
 

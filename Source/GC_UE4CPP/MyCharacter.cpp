@@ -24,6 +24,7 @@ AMyCharacter::AMyCharacter()
 	MinCameraZoom = 50;
 	MaxCameraZoom = 500;
 	ZoomSpeed = 100;
+	SlowCarryMultiplier = 0.5;
 	IsPicking = false;
 	IsFinished = false;
 	Won = false;
@@ -140,6 +141,8 @@ void AMyCharacter::PickUp()
 			IsPicking = true;
 			IsCarrying = false;
 
+			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed / SlowCarryMultiplier;
+
 			CarriedFood->SetPhysics(true);
 
 
@@ -153,6 +156,8 @@ void AMyCharacter::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = true;
+
+			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed * SlowCarryMultiplier;
 
 			CarriedFood = PickableFood.GetData()[0];
 			// pick food

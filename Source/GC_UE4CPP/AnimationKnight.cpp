@@ -78,8 +78,6 @@ void UAnimationKnight::NativeUpdateAnimation(float DeltaTimeX)
         {
             Won = false;
         }
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, UKismetStringLibrary::Conv_BoolToString(IsCarrying));
-        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, UKismetStringLibrary::Conv_BoolToString(IsPicking));
     }
 }
 
