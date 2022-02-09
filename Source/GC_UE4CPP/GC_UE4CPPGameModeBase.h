@@ -43,7 +43,7 @@ public:
 	UFUNCTION()
 	void Victory();
 
-	int SetFood();
+	int SetFood(AFood* Food);
 
 	int GetObjective();
 

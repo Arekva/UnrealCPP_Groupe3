@@ -54,8 +54,9 @@ void AGC_UE4CPPGameModeBase::Victory()
 	pc->SetShowMouseCursor(true);
 }
 
-int AGC_UE4CPPGameModeBase::SetFood()
+int AGC_UE4CPPGameModeBase::SetFood(AFood* Food)
 {
+	Food->Destroy();
 	FoodCounter++;
 	if (FoodCounter == Objective)
 	{

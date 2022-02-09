@@ -149,7 +149,7 @@ void AMyCharacter::PickUp()
 			if (IsDepositable)
 			{
 				AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-				Cast<UGameWidget>(MainUI)->SetCurrentFood(GameMode->SetFood());
+				Cast<UGameWidget>(MainUI)->SetCurrentFood(GameMode->SetFood(CarriedFood));
 			}
 		}
 		else if (FoodCounter != 0)
