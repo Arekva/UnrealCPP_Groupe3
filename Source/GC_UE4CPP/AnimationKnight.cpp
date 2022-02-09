@@ -4,6 +4,7 @@
 #include "AnimationKnight.h"
 #include "MyCharacter.h"
 #include "GC_UE4CPPGameModeBase.h"
+#include "Kismet/KismetStringLibrary.h"
 
 UAnimationKnight::UAnimationKnight()
 {
@@ -77,37 +78,51 @@ void UAnimationKnight::NativeUpdateAnimation(float DeltaTimeX)
         {
             Won = false;
         }
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, UKismetStringLibrary::Conv_BoolToString(IsCarrying));
+        GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Cyan, UKismetStringLibrary::Conv_BoolToString(IsPicking));
     }
 }
 
 void UAnimationKnight::AnimNotify_Picking1(UAnimNotify* Notify)
 {
-    if (!PlayerCharacter->IsCarrying)
+    if (PlayerCharacter)
     {
-        PlayerCharacter->IsPicking = false;
+        if (!PlayerCharacter->IsCarrying)
+        {
+            PlayerCharacter->IsPicking = false;
+        }
     }
 }
 
 void UAnimationKnight::AnimNotify_Picking2(UAnimNotify* Notify)
 {
-    if (PlayerCharacter->IsCarrying)
+    if (PlayerCharacter)
     {
-        PlayerCharacter->IsPicking = false;
+        if (PlayerCharacter->IsCarrying)
+        {
+            PlayerCharacter->IsPicking = false;
+        }
     }
 }
 
 void UAnimationKnight::AnimNotify_Grab(UAnimNotify* Notify)
 {
-    if (PlayerCharacter->IsCarrying)
+    if (PlayerCharacter)
     {
-        PlayerCharacter->CarriedFood->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
-        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->FoodGrabDelegate.Broadcast(PlayerCharacter->CarriedFood);
-    }
-    else
-    {
-        PlayerCharacter->CarriedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
-        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->FoodPoseDelegate.Broadcast(PlayerCharacter->CarriedFood);
+        if (PlayerCharacter->IsCarrying)
+        {
+            PlayerCharacter->CarriedFood->AttachToComponent(PlayerCharacter->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+            AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+            GameMode->FoodGrabDelegate.Broadcast(PlayerCharacter->CarriedFood);
+        }
+        else
+        {
+            if (PlayerCharacter->CarriedFood)
+            {
+                PlayerCharacter->CarriedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+            }
+            AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+            GameMode->FoodPoseDelegate.Broadcast(PlayerCharacter->CarriedFood);
+        }
     }
 }
