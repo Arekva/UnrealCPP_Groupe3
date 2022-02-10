@@ -10,6 +10,10 @@ void UDeathWidget::OnRestartClick()
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(false);
 	UGameplayStatics::OpenLevel(GetWorld(), "LVLDesign");
 }
+void UDeathWidget::OnQuitClick()
+{
+	FGenericPlatformMisc::RequestExit(false);
+}
 
 void UDeathWidget::NativeConstruct()
 {
