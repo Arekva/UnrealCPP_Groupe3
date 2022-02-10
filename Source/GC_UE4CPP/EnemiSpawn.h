@@ -35,6 +35,15 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AFood> FoodBP;
 
+	UFUNCTION()
+		void DelaySpawn();
+
+
+
+	FTimerHandle SecondEnemyDelay;
+	FTimerHandle ThirdEnemyDelay;
+	
+
 
 
 	int SpawnedFoodCounter;
