@@ -10,6 +10,10 @@ void UVictoryWidget::OnRestartClick()
 	UGameplayStatics::GetPlayerController(GetWorld(), 0)->SetShowMouseCursor(false);
 	UGameplayStatics::OpenLevel(GetWorld(), "LVLDesign");
 }
+void UVictoryWidget::OnQuitClick()
+{
+	FGenericPlatformMisc::RequestExit(false);
+}
 
 void UVictoryWidget::NativeConstruct()
 {
