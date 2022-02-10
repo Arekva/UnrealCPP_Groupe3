@@ -23,6 +23,9 @@ protected:
 	UFUNCTION()
 		void OnCharacterSeen(APawn* Caught);
 
+	UPROPERTY()
+		class AAIEnemyController* EnemyController;
+
 
 public:	
 	// Called to bind functionality to input

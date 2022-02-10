@@ -42,12 +42,13 @@ protected:
 	UFUNCTION()
 		void FoodGrab(AFood* Food);
 
-	AFood* FoodPlaced;
-
 	TArray<AFood*> DepositableFood;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(VisibleAnywhere)
+		AFood* FoodPlaced;
 
 };
