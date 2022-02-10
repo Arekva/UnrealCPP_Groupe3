@@ -2,6 +2,7 @@
 
 
 #include "Food.h"
+#include "Components/SphereComponent.h"
 #include "MyCharacter.h"
 #include "AIEnemy.h"
 
@@ -14,7 +15,6 @@ AFood::AFood()
 	SphereRadius = 100;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
-	RootComponent = StaticMesh;
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionCollider"));
 	SphereComp->SetupAttachment(RootComponent);
@@ -26,10 +26,8 @@ void AFood::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (FoodMeshes.Num() > 0)
-	{
-		StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, FoodMeshes.Num() - 1)]);
-	}
+	StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, FoodMeshes.Num() - 1)]);
+	RootComponent = StaticMesh;
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AFood::Pickable);
 	SphereComp->OnComponentEndOverlap.AddDynamic(this, &AFood::Unpickable);
