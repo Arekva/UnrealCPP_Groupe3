@@ -114,10 +114,12 @@ void UAnimationEnemy::EnemyVictory()
 {
     IsFinished = true;
     Won = true;
+    Enemy->GetController()->Destroy();
 }
 
 void UAnimationEnemy::EnemyDefeat()
 {
     IsFinished = true;
     Won = false;
+    Enemy->GetController()->Destroy();
 }

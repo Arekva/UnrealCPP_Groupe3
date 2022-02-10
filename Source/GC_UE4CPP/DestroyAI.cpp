@@ -16,6 +16,7 @@ EBTNodeResult::Type UDestroyAI::ExecuteTask(UBehaviorTreeComponent& OwnerComp, u
 	if (EnemyController)
 	{
 		APawn* EnemyPawn = EnemyController->GetPawn();
+		GetWorld()->GetTimerManager().ClearAllTimersForObject(EnemyPawn);
 		EnemyPawn->Destroy();
 		GameMode->DestroyAiDelegate.Broadcast();
 		return EBTNodeResult::Succeeded;
