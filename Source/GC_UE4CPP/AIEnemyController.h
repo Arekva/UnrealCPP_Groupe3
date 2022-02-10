@@ -45,4 +45,10 @@ public:
 	AActor* Spawn;
 	APawn* PlayerPawn;
 	AAIEnemy* AIEnemy;
+
+private :
+	FTimerHandle SeeTimerHandle;
+	
+	UFUNCTION()
+		void OnPurchase();
 };

@@ -3,7 +3,7 @@
 
 #include "PatrolPointSelection.h"
 #include "AIEnemyController.h"
-#include "PatrolPoint.h"
+#include "FoodSlot.h"
 #include "EnemiSpawn.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
@@ -15,16 +15,21 @@ EBTNodeResult::Type UPatrolPointSelection::ExecuteTask(UBehaviorTreeComponent& O
 	{
 		UBlackboardComponent* BlackboardComponent = EnemyController->GetBlackboardComponent();
 
-		APatrolPoint* CurrentPoint = Cast<APatrolPoint>(BlackboardComponent->GetValueAsObject("Destination"));
+		AFoodSlot* CurrentPoint = Cast<AFoodSlot>(BlackboardComponent->GetValueAsObject("Destination"));
 
 		TArray<AActor*> AvailablePatrolPoints = EnemyController->GetPatrolPoints();
 
-		APatrolPoint* NextPatrolPoint = nullptr;
+		AFoodSlot* NextPatrolPoint = nullptr;
 
 
-		if (AvailablePatrolPoints.Num() == 5)
+		if (AvailablePatrolPoints.Num() == 10)
 		{
-			NextPatrolPoint = Cast<APatrolPoint>(AvailablePatrolPoints[FMath::RandRange(0, 4)]);
+			do
+			{
+				int index = FMath::RandRange(0, AvailablePatrolPoints.Num() - 1);
+				NextPatrolPoint = Cast<AFoodSlot>(AvailablePatrolPoints[index]);
+				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Index = %i"), index));
+			} while (NextPatrolPoint->FoodPlaced && EnemyController->AIEnemy->IsCarrying);
 		}
 
 

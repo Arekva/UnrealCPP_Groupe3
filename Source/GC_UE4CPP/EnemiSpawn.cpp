@@ -4,6 +4,8 @@
 #include "EnemiSpawn.h"
 #include "GC_UE4CPPGameModeBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "AIEnemyController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 // Sets default values
 AEnemiSpawn::AEnemiSpawn()
@@ -40,10 +42,16 @@ void AEnemiSpawn::Spawn()
             AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
             if (SpawnedFoodCounter - GameMode->FoodCounter < GameMode->Objective)
             {
+                SpawnedFoodCounter++;
+
                 AFood* FoodRef = GetWorld()->SpawnActor<AFood>(FoodBP, GetTransform());
                 FoodRef->SetPhysics(false);
                 FoodRef->AttachToComponent(EnemyRef->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
                 EnemyRef->IsCarrying = true;
+
+                AAIEnemyController* EnemyController = Cast<AAIEnemyController>(EnemyRef->GetController());
+                EnemyController->GetBlackboardComp()->SetValueAsBool("IsCarrying", true);
+
                 EnemyRef->PickableFood.Add(FoodRef);
                 EnemyRef->PickedFood = EnemyRef->PickableFood[0];
 

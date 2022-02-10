@@ -6,6 +6,7 @@
 #include "AIEnemyController.h"
 #include "GC_UE4CPPGameModeBase.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 // Sets default values
 AAIEnemy::AAIEnemy()
@@ -26,6 +27,7 @@ void AAIEnemy::BeginPlay()
 	{
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AAIEnemy::OnCharacterSeen);
 	}
+	EnemyController = Cast<AAIEnemyController>(GetController());
 }
 
 // Called to bind functionality to input
@@ -37,8 +39,6 @@ void AAIEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AAIEnemy::OnCharacterSeen(APawn* Caught)
 {
-	AAIEnemyController* EnemyController = Cast<AAIEnemyController>(GetController());
-
 	if (EnemyController)
 	{
 		EnemyController->SetCharacterCaught(Caught);
@@ -59,6 +59,8 @@ void AAIEnemy::PickUp()
 			IsPicking = true;
 			IsCarrying = false;
 
+			EnemyController->GetBlackboardComp()->ClearValue("IsCarrying");
+
 			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed / SlowCarryMultiplier;
 
 			PickedFood->SetPhysics(true);
@@ -67,6 +69,8 @@ void AAIEnemy::PickUp()
 		{
 			IsPicking = true;
 			IsCarrying = true;
+
+			EnemyController->GetBlackboardComp()->SetValueAsBool("IsCarrying", true);
 
 			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed * SlowCarryMultiplier;
 
