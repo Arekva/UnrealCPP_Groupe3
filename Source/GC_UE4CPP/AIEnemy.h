@@ -1,11 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "CoreMinimal.h"
+
 #include "GameFramework/Character.h"
-#include "Food.h"
+
 #include "AIEnemy.generated.h"
+
+class AFood;
 
 UCLASS()
 class GC_UE4CPP_API AAIEnemy : public ACharacter
@@ -13,11 +14,9 @@ class GC_UE4CPP_API AAIEnemy : public ACharacter
 	GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
 	AAIEnemy();
 
 protected:
-	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	UFUNCTION()
@@ -26,11 +25,13 @@ protected:
 	UPROPERTY()
 		class AAIEnemyController* EnemyController;
 
+private:
+	float FieldOfView;
 
-public:	
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	float MaxWalkSpeed;
+	float EasyWalkSpeedMultiplicator;
 
+public:
 	UPROPERTY(EditAnywhere, Category = AI)
 		class UBehaviorTree* BehaviorTree;
 
@@ -43,12 +44,12 @@ public:
 	UFUNCTION()
 		void PickUp();
 
-	bool IsCarrying;
-
-	bool IsPicking;
+	bool IsCarrying, IsPicking;
 
 	TArray<AFood*> PickableFood;
 	int FoodCounter;
 
 	AFood* PickedFood;
+
+	float CatchRange;
 };
