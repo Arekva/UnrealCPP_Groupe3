@@ -3,6 +3,8 @@
 
 #include "AnimationEnemy.h"
 #include "GC_UE4CPPGameModeBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "AIEnemyController.h"
 
 UAnimationEnemy::UAnimationEnemy()
 {
@@ -114,12 +116,24 @@ void UAnimationEnemy::EnemyVictory()
 {
     IsFinished = true;
     Won = true;
-    Enemy->GetController()->Destroy();
+    UCharacterMovementComponent* Movement = Enemy->GetCharacterMovement();
+    Movement->StopActiveMovement();
+    AAIEnemyController* EnemyController = Cast<AAIEnemyController>(Enemy->GetController());
+    if (EnemyController)
+    {
+        EnemyController->GetBehaviorComp()->StopTree();
+    }
 }
 
 void UAnimationEnemy::EnemyDefeat()
 {
     IsFinished = true;
     Won = false;
-    Enemy->GetController()->Destroy();
+    UCharacterMovementComponent* Movement = Enemy->GetCharacterMovement();
+    Movement->StopActiveMovement();
+    AAIEnemyController* EnemyController = Cast<AAIEnemyController>(Enemy->GetController());
+    if (EnemyController)
+    {
+        EnemyController->GetBehaviorComp()->StopTree();
+    }
 }

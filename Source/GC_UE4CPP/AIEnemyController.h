@@ -38,6 +38,7 @@ public:
 	void SetCharacterCaught(APawn* Caught);
 
 	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComponent; }
+	FORCEINLINE UBehaviorTreeComponent* GetBehaviorComp() const { return BehaviorComponent; }
 	FORCEINLINE TArray<AActor*> GetPatrolPoints() const { return PatrolPoints; }
 
 	int32 CurrentPatrolPoint = 0;
