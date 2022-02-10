@@ -24,11 +24,20 @@ protected:
 	class UButton* StartButton;
 
 	UPROPERTY(meta = (BindWidget))
+	class UButton* StartButtonEz;
+
+	UPROPERTY(meta = (BindWidget))
 	class UButton* QuitButton;
 
 private:
 	UFUNCTION()
 	void OnStartClick();
 	UFUNCTION()
+	void OnStartEzClick();
+	UFUNCTION()
 	void OnQuitClick();
+
+public:
+		bool easymode;
+
 };

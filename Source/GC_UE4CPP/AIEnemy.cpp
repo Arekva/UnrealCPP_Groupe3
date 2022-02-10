@@ -1,9 +1,10 @@
+#include "AIEnemy.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Perception/PawnSensingComponent.h"
 
-#include "AIEnemy.h"
+
 #include "AIEnemyController.h"
 #include "Food.h"
 
@@ -12,7 +13,7 @@
 AAIEnemy::AAIEnemy()
 {
 	SlowCarryMultiplier = 0.5;
-	EasyWalkSpeedMultiplicator = 0.75;
+	EasyWalkSpeedMultiplicator = 0.01;
 
 	FieldOfView = 90.0;
 	CatchRange = 100.0;
@@ -27,7 +28,7 @@ AAIEnemy::AAIEnemy()
 void AAIEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 	if (PawnSensingComponent)
 	{
 		// Register the catch delegate
@@ -37,12 +38,12 @@ void AAIEnemy::BeginPlay()
 	EnemyController = Cast<AAIEnemyController>(GetController());
 
 	float WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
-	// if (game.easymode)
-	// {
-	//     WalkSpeed *= EasyWalkSpeedMultiplicator;
-	// }
+	if (GameMode->EasyMode)
+	{
+	     WalkSpeed *= EasyWalkSpeedMultiplicator;
+	}
 		
-	MaxWalkSpeed = WalkSpeed; // cache the max walk speed
+	MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; // cache the max walk speed
 }
 
 void AAIEnemy::OnCharacterSeen(APawn* Caught)
