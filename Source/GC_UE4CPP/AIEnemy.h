@@ -23,6 +23,9 @@ protected:
 	UFUNCTION()
 		void OnCharacterSeen(APawn* Caught);
 
+	UPROPERTY()
+		class AAIEnemyController* EnemyController;
+
 
 public:	
 	// Called to bind functionality to input
@@ -34,6 +37,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = AI)
 		class UPawnSensingComponent* PawnSensingComponent;
 
+	UPROPERTY(EditAnywhere)
+		float SlowCarryMultiplier;
+
 	UFUNCTION()
 		void PickUp();
 
@@ -43,4 +49,6 @@ public:
 
 	TArray<AFood*> PickableFood;
 	int FoodCounter;
+
+	AFood* PickedFood;
 };

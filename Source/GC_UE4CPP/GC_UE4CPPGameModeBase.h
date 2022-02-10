@@ -19,6 +19,11 @@ class GC_UE4CPP_API AGC_UE4CPPGameModeBase : public AGameModeBase
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictorySignature);
 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FDestroyAiSignature);
+
+
+
+
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFoodPoseSignature, AFood*, Food);
 
 	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FFoodGrabSignature, AFood*, Food);
@@ -37,17 +42,18 @@ public:
 
 	FFoodGrabSignature FoodGrabDelegate;
 
+	FDestroyAiSignature DestroyAiDelegate;
+
 	UFUNCTION()
 	void Defeat();
 
 	UFUNCTION()
 	void Victory();
 
-	int SetFood();
+	int SetFood(AFood* Food);
 
 	int GetObjective();
 
-private:
 	int FoodCounter;
 
 	UPROPERTY(EditAnywhere)

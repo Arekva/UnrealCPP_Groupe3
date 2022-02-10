@@ -2,7 +2,6 @@
 
 
 #include "Food.h"
-#include "Components/SphereComponent.h"
 #include "MyCharacter.h"
 #include "AIEnemy.h"
 
@@ -15,6 +14,7 @@ AFood::AFood()
 	SphereRadius = 100;
 
 	StaticMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMesh"));
+	RootComponent = StaticMesh;
 
 	SphereComp = CreateDefaultSubobject<USphereComponent>(TEXT("DetectionCollider"));
 	SphereComp->SetupAttachment(RootComponent);
@@ -26,8 +26,10 @@ void AFood::BeginPlay()
 {
 	Super::BeginPlay();
 
-	StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, FoodMeshes.Num() - 1)]);
-	RootComponent = StaticMesh;
+	if (FoodMeshes.Num() > 0)
+	{
+		StaticMesh->SetStaticMesh(FoodMeshes[FMath::RandRange(0, FoodMeshes.Num() - 1)]);
+	}
 
 	SphereComp->OnComponentBeginOverlap.AddDynamic(this, &AFood::Pickable);
 	SphereComp->OnComponentEndOverlap.AddDynamic(this, &AFood::Unpickable);
@@ -82,14 +84,9 @@ void AFood::Unpickable(UPrimitiveComponent* OverlappedComponent, AActor* OtherAc
 
 void AFood::SetPhysics(bool State)
 {
-	if (State)
-	{
-		StaticMesh->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	}
-	else
-	{
-		StaticMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
+	auto collision_state = State ? ECollisionEnabled::PhysicsOnly : ECollisionEnabled::NoCollision;
+
+	StaticMesh->SetCollisionEnabled(collision_state);
 	StaticMesh->SetSimulatePhysics(State);
 
 	//StaticMesh->SetSimulatePhysics(State);

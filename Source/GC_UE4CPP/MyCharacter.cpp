@@ -24,6 +24,7 @@ AMyCharacter::AMyCharacter()
 	MinCameraZoom = 50;
 	MaxCameraZoom = 500;
 	ZoomSpeed = 100;
+	SlowCarryMultiplier = 0.5;
 	IsPicking = false;
 	IsFinished = false;
 	Won = false;
@@ -140,19 +141,23 @@ void AMyCharacter::PickUp()
 			IsPicking = true;
 			IsCarrying = false;
 
+			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed / SlowCarryMultiplier;
+
 			CarriedFood->SetPhysics(true);
 
 
 			if (IsDepositable)
 			{
 				AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-				Cast<UGameWidget>(MainUI)->SetCurrentFood(GameMode->SetFood());
+				Cast<UGameWidget>(MainUI)->SetCurrentFood(GameMode->SetFood(CarriedFood));
 			}
 		}
 		else if (FoodCounter != 0)
 		{
 			IsPicking = true;
 			IsCarrying = true;
+
+			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed * SlowCarryMultiplier;
 
 			CarriedFood = PickableFood.GetData()[0];
 			// pick food

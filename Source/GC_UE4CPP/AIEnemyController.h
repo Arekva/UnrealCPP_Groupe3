@@ -38,6 +38,7 @@ public:
 	void SetCharacterCaught(APawn* Caught);
 
 	FORCEINLINE UBlackboardComponent* GetBlackboardComp() const { return BlackboardComponent; }
+	FORCEINLINE UBehaviorTreeComponent* GetBehaviorComp() const { return BehaviorComponent; }
 	FORCEINLINE TArray<AActor*> GetPatrolPoints() const { return PatrolPoints; }
 
 	int32 CurrentPatrolPoint = 0;
@@ -45,4 +46,10 @@ public:
 	AActor* Spawn;
 	APawn* PlayerPawn;
 	AAIEnemy* AIEnemy;
+
+private :
+	FTimerHandle SeeTimerHandle;
+	
+	UFUNCTION()
+		void OnPurchase();
 };

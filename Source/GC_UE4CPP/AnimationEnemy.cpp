@@ -3,6 +3,8 @@
 
 #include "AnimationEnemy.h"
 #include "GC_UE4CPPGameModeBase.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "AIEnemyController.h"
 
 UAnimationEnemy::UAnimationEnemy()
 {
@@ -59,6 +61,15 @@ void UAnimationEnemy::NativeUpdateAnimation(float DeltaTimeX)
         {
             IsCarrying = false;
         }
+
+        if (Enemy->IsPicking)
+        {
+            IsPicking = true;
+        }
+        else
+        {
+            IsPicking = false;
+        }
     }
 }
 
@@ -80,18 +91,24 @@ void UAnimationEnemy::AnimNotify_Picking2(UAnimNotify* Notify)
 
 void UAnimationEnemy::AnimNotify_Grab(UAnimNotify* Notify)
 {
-    if (Enemy->IsCarrying)
+    if (Enemy)
     {
-        Enemy->PickableFood[0]->AttachToComponent(Enemy->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
-        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->FoodGrabDelegate.Broadcast(Enemy->PickableFood[0]);
-    }
-    else
-    {
-        Enemy->PickableFood[0]->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+        if (Enemy->IsCarrying)
+        {
+            Enemy->PickedFood->AttachToComponent(Enemy->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+            AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+            GameMode->FoodGrabDelegate.Broadcast(Enemy->PickedFood);
+        }
+        else
+        {
+            if (Enemy->PickedFood)
+            {
+                Enemy->PickedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
 
-        AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-        GameMode->FoodPoseDelegate.Broadcast(Enemy->PickableFood[0]);
+                AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+                GameMode->FoodPoseDelegate.Broadcast(Enemy->PickedFood);
+            }
+        }
     }
 }
 
@@ -99,10 +116,24 @@ void UAnimationEnemy::EnemyVictory()
 {
     IsFinished = true;
     Won = true;
+    UCharacterMovementComponent* Movement = Enemy->GetCharacterMovement();
+    Movement->StopActiveMovement();
+    AAIEnemyController* EnemyController = Cast<AAIEnemyController>(Enemy->GetController());
+    if (EnemyController)
+    {
+        EnemyController->GetBehaviorComp()->StopTree();
+    }
 }
 
 void UAnimationEnemy::EnemyDefeat()
 {
     IsFinished = true;
     Won = false;
+    UCharacterMovementComponent* Movement = Enemy->GetCharacterMovement();
+    Movement->StopActiveMovement();
+    AAIEnemyController* EnemyController = Cast<AAIEnemyController>(Enemy->GetController());
+    if (EnemyController)
+    {
+        EnemyController->GetBehaviorComp()->StopTree();
+    }
 }

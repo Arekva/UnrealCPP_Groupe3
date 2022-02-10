@@ -69,6 +69,7 @@ void AFoodSlot::FoodPose(AFood* Food)
 		Food->SetActorLocation(GetActorLocation());
 		Food->SetActorRotation(GetActorRotation());
 		FoodPlaced = Food;
+		Food->SetPhysics(false);
 	}
 }
 

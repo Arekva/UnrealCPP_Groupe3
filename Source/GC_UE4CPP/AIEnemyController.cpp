@@ -6,7 +6,7 @@
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "PatrolPoint.h"
+#include "FoodSlot.h"
 
 AAIEnemyController::AAIEnemyController()
 {
@@ -29,8 +29,9 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 				BlackboardComponent->SetValueAsVector("PreviousPosition", AIEnemy->GetActorLocation());
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Saw you !"));
-			BlackboardComponent->SetValueAsVector(PlayerKey, Caught->GetActorLocation());
+			BlackboardComponent->SetValueAsObject(PlayerKey, Caught);
 			BlackboardComponent->SetValueAsBool("SeenPlayer", true);
+			GetWorld()->GetTimerManager().SetTimer(SeeTimerHandle, this, &AAIEnemyController::OnPurchase, 0.6, false);
 		}
 	}
 }
@@ -48,10 +49,15 @@ void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 		{
 			BlackboardComponent->InitializeBlackboard(*(AIEnemy->BehaviorTree->BlackboardAsset));
 		}
-		UGameplayStatics::GetAllActorsOfClass(GetWorld(), APatrolPoint::StaticClass(), PatrolPoints);
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFoodSlot::StaticClass(), PatrolPoints);
 		Spawn = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemiSpawn::StaticClass());
 
 
 		BehaviorComponent->StartTree(*AIEnemy->BehaviorTree);
 	}
+}
+
+void AAIEnemyController::OnPurchase()
+{
+	BlackboardComponent->ClearValue("SeenPlayer");
 }
