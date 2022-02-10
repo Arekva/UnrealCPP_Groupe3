@@ -20,9 +20,10 @@ void AEnemiSpawn::BeginPlay()
 {
 	Super::BeginPlay();
     AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-    GameMode->DestroyAiDelegate.AddDynamic(this, &AEnemiSpawn::Spawn);
+    GameMode->DestroyAiDelegate.AddDynamic(this, &AEnemiSpawn::DelaySpawn);
     Spawn();
-	
+    GetWorld()->GetTimerManager().SetTimer(SecondEnemyDelay, this, &AEnemiSpawn::Spawn, 1, false);
+    GetWorld()->GetTimerManager().SetTimer(ThirdEnemyDelay, this, &AEnemiSpawn::Spawn, 10, false);
 }
 
 // Called every frame
@@ -32,8 +33,17 @@ void AEnemiSpawn::Tick(float DeltaTime)
 
 }
 
+void AEnemiSpawn::DelaySpawn()
+{
+    float time = FMath::RandRange(0.1f, 5.0f);
+    FTimerHandle handle;
+    GetWorld()->GetTimerManager().SetTimer(handle, this, &AEnemiSpawn::Spawn, time, false);
+    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("DelaySpawn")));
+}
+
 void AEnemiSpawn::Spawn()
 {
+    GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("Spawn")));
     if (EnemyBP)
     {
         AAIEnemy* EnemyRef = GetWorld()->SpawnActor<AAIEnemy>(EnemyBP, GetTransform());
@@ -62,3 +72,4 @@ void AEnemiSpawn::Spawn()
         }
     }
 }
+
