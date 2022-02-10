@@ -23,7 +23,7 @@ void AEnemiSpawn::BeginPlay()
     GameMode->DestroyAiDelegate.AddDynamic(this, &AEnemiSpawn::DelaySpawn);
     Spawn();
     GetWorld()->GetTimerManager().SetTimer(SecondEnemyDelay, this, &AEnemiSpawn::Spawn, 1, false);
-    GetWorld()->GetTimerManager().SetTimer(ThirdEnemyDelay, this, &AEnemiSpawn::Spawn, 10, false);
+    GetWorld()->GetTimerManager().SetTimer(ThirdEnemyDelay, this, &AEnemiSpawn::Spawn, 60, false);
 }
 
 // Called every frame
