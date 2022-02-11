@@ -1,15 +1,14 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
-#include "AIEnemyController.h"
-#include "AIEnemy.h"
 #include "BehaviorTree/BehaviorTree.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
+
+#include "AIEnemy.h"
+#include "AIEnemyController.h"
 #include "FoodSlot.h"
 
 AAIEnemyController::AAIEnemyController()
 {
+	// Setup AI components
 	BehaviorComponent = CreateDefaultSubobject<UBehaviorTreeComponent>(TEXT("BehaviorComponent"));
 	BlackboardComponent = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackboardComponent"));
 
@@ -26,12 +25,21 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 		if (Caught == PlayerPawn)
 		{
 			if (!BlackboardComponent->GetValueAsBool("SeenPlayer"))
+			{
+				// Update the AI move target to where the AI seen the player for last time
 				BlackboardComponent->SetValueAsVector("PreviousPosition", AIEnemy->GetActorLocation());
+			}
 
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Saw you !"));
+
+			// Update blackboard to set that the player has been seen
 			BlackboardComponent->SetValueAsObject(PlayerKey, Caught);
 			BlackboardComponent->SetValueAsBool("SeenPlayer", true);
+
+			// Update the cooldown to check the ~~pur~~chase check
 			GetWorld()->GetTimerManager().SetTimer(SeeTimerHandle, this, &AAIEnemyController::OnPurchase, 0.6, false);
+																							//  --------
+																							//	^ lol
 		}
 	}
 }
@@ -39,6 +47,7 @@ void AAIEnemyController::SetCharacterCaught(APawn* Caught)
 void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 {
 	Super::OnPossess(PawnPossessed);
+
 	PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 
 	AIEnemy = Cast<AAIEnemy>(PawnPossessed);
@@ -49,6 +58,9 @@ void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 		{
 			BlackboardComponent->InitializeBlackboard(*(AIEnemy->BehaviorTree->BlackboardAsset));
 		}
+
+		// Spawn the character and its AI
+
 		UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFoodSlot::StaticClass(), PatrolPoints);
 		Spawn = UGameplayStatics::GetActorOfClass(GetWorld(), AEnemiSpawn::StaticClass());
 
@@ -57,7 +69,4 @@ void AAIEnemyController::OnPossess(APawn* PawnPossessed)
 	}
 }
 
-void AAIEnemyController::OnPurchase()
-{
-	BlackboardComponent->ClearValue("SeenPlayer");
-}
+void AAIEnemyController::OnPurchase() { BlackboardComponent->ClearValue("SeenPlayer"); }
