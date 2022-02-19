@@ -1,10 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
+#include "Animation/AnimInstance.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 #include "AnimationEnemy.h"
-#include "GC_UE4CPPGameModeBase.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "AIEnemyController.h"
+#include "GC_UE4CPPGameModeBase.h"
+#include "Food.h"
 
 UAnimationEnemy::UAnimationEnemy()
 {
@@ -20,6 +20,7 @@ void UAnimationEnemy::NativeBeginPlay()
 
     AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 
+    // End game delegate register
     GameMode->DefeatDelegate.AddDynamic(this, &UAnimationEnemy::EnemyVictory);
     GameMode->VictoryDelegate.AddDynamic(this, &UAnimationEnemy::EnemyDefeat);
 }
@@ -39,42 +40,20 @@ void UAnimationEnemy::NativeUpdateAnimation(float DeltaTimeX)
 
     if (!Owner)
     {
-        return;
+       return;
     }
 
     if (Enemy)
     {
-        if (Enemy->GetVelocity().IsNearlyZero(0.5))
-        {
-            IsWalking = false;
-        }
-        else
-        {
-            IsWalking = true;
-        }
-
-        if (Enemy->IsCarrying)
-        {
-            IsCarrying = true;
-        }
-        else
-        {
-            IsCarrying = false;
-        }
-
-        if (Enemy->IsPicking)
-        {
-            IsPicking = true;
-        }
-        else
-        {
-            IsPicking = false;
-        }
+        IsWalking = !Enemy->GetVelocity().IsNearlyZero(0.5);
+        IsCarrying = Enemy->IsCarrying;
+        IsPicking = Enemy->IsPicking;
     }
 }
 
 void UAnimationEnemy::AnimNotify_Picking1(UAnimNotify* Notify)
 {
+    // Begin of grab animation
     if (!Enemy->IsCarrying)
     {
         Enemy->IsPicking = false;
@@ -83,6 +62,7 @@ void UAnimationEnemy::AnimNotify_Picking1(UAnimNotify* Notify)
 
 void UAnimationEnemy::AnimNotify_Picking2(UAnimNotify* Notify)
 {
+    // End of grab animation
     if (Enemy->IsCarrying)
     {
         Enemy->IsPicking = false;
@@ -95,30 +75,34 @@ void UAnimationEnemy::AnimNotify_Grab(UAnimNotify* Notify)
     {
         if (Enemy->IsCarrying)
         {
+            // Grab food for carrying
+
             Enemy->PickedFood->AttachToComponent(Enemy->GetMesh(), FAttachmentTransformRules::SnapToTargetNotIncludingScale, TEXT("Fist_RSocket"));
+
             AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
             GameMode->FoodGrabDelegate.Broadcast(Enemy->PickedFood);
         }
-        else
+        else if (Enemy->PickedFood)
         {
-            if (Enemy->PickedFood)
-            {
-                Enemy->PickedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+            // Drop food for carrying
 
-                AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-                GameMode->FoodPoseDelegate.Broadcast(Enemy->PickedFood);
-            }
+            Enemy->PickedFood->DetachFromActor(FDetachmentTransformRules::KeepWorldTransform);
+
+            AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
+            GameMode->FoodPoseDelegate.Broadcast(Enemy->PickedFood);
         }
     }
 }
 
 void UAnimationEnemy::EnemyVictory()
 {
+    // WIN !
     IsFinished = true;
     Won = true;
-    UCharacterMovementComponent* Movement = Enemy->GetCharacterMovement();
-    Movement->StopActiveMovement();
+
+    Enemy->GetCharacterMovement()->StopActiveMovement();
     AAIEnemyController* EnemyController = Cast<AAIEnemyController>(Enemy->GetController());
+
     if (EnemyController)
     {
         EnemyController->GetBehaviorComp()->StopTree();
@@ -127,11 +111,13 @@ void UAnimationEnemy::EnemyVictory()
 
 void UAnimationEnemy::EnemyDefeat()
 {
+    // LOSE ! TAKE THE L
     IsFinished = true;
     Won = false;
-    UCharacterMovementComponent* Movement = Enemy->GetCharacterMovement();
-    Movement->StopActiveMovement();
+
+    Enemy->GetCharacterMovement()->StopActiveMovement();
     AAIEnemyController* EnemyController = Cast<AAIEnemyController>(Enemy->GetController());
+
     if (EnemyController)
     {
         EnemyController->GetBehaviorComp()->StopTree();

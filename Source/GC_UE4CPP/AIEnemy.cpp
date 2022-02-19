@@ -1,40 +1,49 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "AIEnemy.h"
-#include "Perception/PawnSensingComponent.h"
-#include "AIEnemyController.h"
-#include "GC_UE4CPPGameModeBase.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Perception/PawnSensingComponent.h"
 
-// Sets default values
+
+#include "AIEnemyController.h"
+#include "Food.h"
+
+#include "GC_UE4CPPGameModeBase.h"
+
 AAIEnemy::AAIEnemy()
 {
+	SlowCarryMultiplier = 0.5;
+	EasyWalkSpeedMultiplicator = 0.01;
+
+	FieldOfView = 90.0;
+	CatchRange = 100.0;
+
 	PawnSensingComponent = CreateDefaultSubobject<UPawnSensingComponent>(TEXT("PawnSensingComponent"));
-	PawnSensingComponent->SetPeripheralVisionAngle(90);
+	PawnSensingComponent->SetPeripheralVisionAngle(FieldOfView);
+
 	IsPicking = false;
 	FoodCounter = 0;
-	SlowCarryMultiplier = 0.5;
 }
 
-// Called when the game starts or when spawned
 void AAIEnemy::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
 	if (PawnSensingComponent)
 	{
+		// Register the catch delegate
 		PawnSensingComponent->OnSeePawn.AddDynamic(this, &AAIEnemy::OnCharacterSeen);
 	}
+
 	EnemyController = Cast<AAIEnemyController>(GetController());
-}
 
-// Called to bind functionality to input
-void AAIEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
+	float WalkSpeed = GetCharacterMovement()->MaxWalkSpeed;
+	if (GameMode->EasyMode)
+	{
+	     WalkSpeed *= EasyWalkSpeedMultiplicator;
+	}
+		
+	MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed = WalkSpeed; // cache the max walk speed
 }
 
 void AAIEnemy::OnCharacterSeen(APawn* Caught)
@@ -42,40 +51,55 @@ void AAIEnemy::OnCharacterSeen(APawn* Caught)
 	if (EnemyController)
 	{
 		EnemyController->SetCharacterCaught(Caught);
-		if (FVector::Distance(GetActorLocation(), Caught->GetActorLocation()) < 100)
+
+		// Get if the player is close enough to the bad guy so he get caught and lose the game
+		if (FVector::Distance(GetActorLocation(), Caught->GetActorLocation()) < CatchRange)
 		{
-			AGC_UE4CPPGameModeBase* GameMode = Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode());
-			GameMode->DefeatDelegate.Broadcast();
+			// Invoke the defeat delegate (defeat UI, animations, ...)
+			Cast<AGC_UE4CPPGameModeBase>(GetWorld()->GetAuthGameMode())->DefeatDelegate.Broadcast();
 		}
 	}
 }
 
 void AAIEnemy::PickUp()
 {
+	// Take/drop and do animations
 	if (!IsPicking)
 	{
 		if (IsCarrying)
 		{
+			// Update food state machine:
+			// 
+			// drop the carried food on the floor and speed up the character again.
+
 			IsPicking = true;
 			IsCarrying = false;
 
 			EnemyController->GetBlackboardComp()->ClearValue("IsCarrying");
 
-			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed / SlowCarryMultiplier;
+			GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed;
 
-			PickedFood->SetPhysics(true);
+			PickedFood->SetPhysics(true); // enable food physics, can be kind of fun playing football with a Hamburger
 		}
 		else if (FoodCounter != 0)
 		{
+			// Update food state machine:
+			// 
+			// if there is a food to pick on the floor, do pick and carry it.
+			// slow the character down.
+
 			IsPicking = true;
 			IsCarrying = true;
 
 			EnemyController->GetBlackboardComp()->SetValueAsBool("IsCarrying", true);
 
-			GetCharacterMovement()->MaxWalkSpeed = GetCharacterMovement()->MaxWalkSpeed * SlowCarryMultiplier;
+			GetCharacterMovement()->MaxWalkSpeed = MaxWalkSpeed * SlowCarryMultiplier;
+
+
+			// Set the picked food handle to the first available food of the array.
 
 			PickedFood = PickableFood.GetData()[0];
-			PickedFood->SetPhysics(false);
+			PickedFood->SetPhysics(false); // disable physics to avoid character to be propulsed by food.
 		}
 	}
 }

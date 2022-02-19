@@ -30,6 +30,7 @@ class GC_UE4CPP_API AGC_UE4CPPGameModeBase : public AGameModeBase
 	
 protected:
 	virtual void BeginPlay() override;
+	
 
 public:
 	AGC_UE4CPPGameModeBase();
@@ -58,5 +59,7 @@ public:
 
 	UPROPERTY(EditAnywhere)
 		int Objective;
+
+	bool EasyMode = false;
 
 };

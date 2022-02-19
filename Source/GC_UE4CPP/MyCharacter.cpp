@@ -63,7 +63,7 @@ void AMyCharacter::BeginPlay()
 
 	MainUI = CreateWidget(pc, MainUIClass);
 	MainUI->AddToViewport();
-	MainUI->SetVisibility(ESlateVisibility::Visible);
+	MainUI->SetVisibility(ESlateVisibility::Hidden);
 
 	Cast<UGameWidget>(MainUI)->SetWinFood(game_mode->GetObjective());
 

@@ -1,11 +1,10 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+#include "BehaviorTree/BlackboardComponent.h"
+#include "BehaviorTree/BTTaskNode.h"
 
-
-#include "PatrolPointSelection.h"
 #include "AIEnemyController.h"
 #include "FoodSlot.h"
 #include "EnemiSpawn.h"
-#include "BehaviorTree/BlackboardComponent.h"
+#include "PatrolPointSelection.h"
 
 EBTNodeResult::Type UPatrolPointSelection::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
